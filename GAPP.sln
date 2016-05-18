@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{C471C287-D9FC-C461-5726-5CB2F4A734DB}") = "GAPP", "Assembly-CSharp.csproj", "{F82D8247-FA6F-F022-2F7F-257F1E4F56D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F82D8247-FA6F-F022-2F7F-257F1E4F56D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F82D8247-FA6F-F022-2F7F-257F1E4F56D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F82D8247-FA6F-F022-2F7F-257F1E4F56D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F82D8247-FA6F-F022-2F7F-257F1E4F56D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
