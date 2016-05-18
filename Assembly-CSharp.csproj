@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{F82D8247-FA6F-F022-2F7F-257F1E4F56D9}</ProjectGuid>
+    <ProjectGuid>{A063F656-4266-291D-15A5-A2AF191C7DA0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -88,10 +88,10 @@
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="ApiAiSDK">
- <HintPath>/Users/GApplab/Desktop/GAPP/Assets/ApiAiSDK/lib/ApiAiSDK.dll</HintPath>
+ <HintPath>/Users/GApplab/Documents/ColorMeHealthy/Assets/ApiAiSDK/lib/ApiAiSDK.dll</HintPath>
  </Reference>
  <Reference Include="fastJSON">
- <HintPath>/Users/GApplab/Desktop/GAPP/Assets/ApiAiSDK/lib/fastJSON.dll</HintPath>
+ <HintPath>/Users/GApplab/Documents/ColorMeHealthy/Assets/ApiAiSDK/lib/fastJSON.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

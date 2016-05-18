@@ -23,12 +23,16 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 	// Use this for initialization
 	public GameObject dailyRewardPopUp;
 	void Start () {
-
+		
 		firstTouchDown = false;
 		spriteNameToButtonMap = new Dictionary<string, Button> ();
 		stickerPlaced = new List<GameObject> ();
-		foreach (Button btn in stickerButtons)
+	
+		foreach (Button btn in stickerButtons) {
 			spriteNameToButtonMap [btn.image.sprite.name] = btn;
+
+		}
+
 	
 		index = PlayerPrefs.GetInt ("stickersunlocked", 1);
 		int dayOfYear = PlayerPrefs.GetInt("stickerUnlockDay",System.DateTime.Now.DayOfYear - 1);
@@ -99,6 +103,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			Vector3 touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			touchPosition.z = -3.0f;
 			currentStickerObject.transform.position = touchPosition;
+
 		}
 		if (Input.GetMouseButton (0)) {
 			firstTouchDown = true;

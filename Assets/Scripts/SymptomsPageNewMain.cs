@@ -94,13 +94,13 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetMouseButton(0) && currentState == States.waitForFirstTouch && firstTouches < 5)
+		if(Input.GetMouseButton(0) && currentState == States.waitForFirstTouch && firstTouches < 2)
 		{
 			firstTouches++;
 			//currentState = States.touchbegin;
 			return;
 		}
-		else if(Input.GetMouseButton(0) && currentState == States.waitForFirstTouch && firstTouches >= 5)
+		else if(Input.GetMouseButton(0) && currentState == States.waitForFirstTouch && firstTouches >= 2)
 		{
 			currentState = States.touchbegin;
 			return;
