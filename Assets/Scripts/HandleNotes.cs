@@ -81,6 +81,7 @@ public class HandleNotes : MonoBehaviour {
     public void onButtonClicked()
     {
 		memoAudioSource.Play ();
+		//Camera.main.GetComponent<AudioSource> ().Play();
         Debug.Log("on button clicked");
         string  fileName = Application.persistentDataPath + "/Color" + "Dairy.json";
         if (System.IO.File.Exists(fileName))
@@ -109,10 +110,16 @@ public class HandleNotes : MonoBehaviour {
 				{ "Input Size", memoBox.text.Length}
 			});
         memoBox.text = "";
-        SceneManager.LoadScene("MainSelectionScreen");
-		Camera.main.GetComponent<AudioSource> ().Play();
+       // SceneManager.LoadScene("MainSelectionScreen");
+
 
     }
+
+
+	void OnDestroy() {
+
+		onButtonClicked ();
+	}
 
     void buildJson()
     {

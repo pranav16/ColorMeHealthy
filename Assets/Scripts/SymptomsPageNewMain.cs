@@ -42,6 +42,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		else
 			hotLoadMainSymptoms();
 		loadAndSetCustomization ();
+ 		FindObjectOfType<QuestSystem> ().updateCounters ("Genral_Symptoms");
 //		string filePath = "Symptoms.json";
 //		string fileName = Application.persistentDataPath + "/Color" + filePath;
 //		System.IO.File.Delete (fileName);
@@ -78,13 +79,10 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			if (Physics.Raycast (ray, out hit)) {
-
 				if (checkForInteractableObjects(hit.collider.name)|| hit.collider.name.Contains("Blocker")) {
 					return;	
 				}
-
 			}
-
 		}
 		RaycastHit hitCheck;
 		Ray rayCheck = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -405,11 +403,16 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	{
 		createMainSymptoms();
 		buildJSONFile ();
-		questions [2].gameObject.GetComponent<AudioSource> ().Play ();
 		Analytics.CustomEvent ("Symptoms Main save clicked",new Dictionary<string, object>());
 
-		SceneManager.LoadScene("MainSelectionScreen");
 	}
+
+	void OnDestroy() {
+
+		savedClicked ();
+	}
+
+
 	public void backButtonClicked()
 	{
 		Camera.main.GetComponent<AudioSource> ().Play();
@@ -526,7 +529,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	}
 	public void loadAndSetCustomization()
 	{
-		Camera.main.GetComponent<GenderSelector> ().setInitialStates();
+		//Camera.main.GetComponent<GenderSelector> ().setInitialStates();
 		string filePath = "CurrentCustomization.json";
 		string fileName = Application.persistentDataPath + "/Color" + filePath;
 		if (!System.IO.File.Exists (fileName))return;

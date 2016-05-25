@@ -231,6 +231,9 @@ public class PaintBrush : MonoBehaviour {
 		takeScreenShot (filePath);
 	}
 
+
+
+
 	public void takeScreenShot(string filePath)
 	{
 

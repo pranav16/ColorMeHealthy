@@ -70,6 +70,7 @@
      <Compile Include="Assets\Scripts\MenuHadlerMainScreen.cs" />
      <Compile Include="Assets\Scripts\ObjectChanger.cs" />
      <Compile Include="Assets\Scripts\PaintBrush.cs" />
+     <Compile Include="Assets\Scripts\QuestSystem.cs" />
      <Compile Include="Assets\Scripts\StickerHomeScreenBehaviour.cs" />
      <Compile Include="Assets\Scripts\SymptomsPageNewLocal.cs" />
      <Compile Include="Assets\Scripts\SymptomsPageNewMain.cs" />

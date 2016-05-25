@@ -20,6 +20,9 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 	public List<GameObject> lockedSilhouette;
 	public Button dailyRewardUnlocked;
 	public List<Button> giftButtons;
+
+	public Button stickerButton;
+	public Button trashButton;
 	// Use this for initialization
 	public GameObject dailyRewardPopUp;
 	void Start () {
@@ -134,6 +137,9 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 						isRePositionObject = false;
 						firstTouchDown = false;
 						Trash.SetActive (false);
+						stickerButton.gameObject.SetActive (true);
+						trashButton.gameObject.SetActive (false);
+
 
 						return;
 					}
@@ -148,6 +154,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 
 					currentStickerObject = null;
 					Trash.SetActive (false);
+					stickerButton.gameObject.SetActive (true);
+					trashButton.gameObject.SetActive (false);
 					disableStickers ();
 
 					firstTouchDown = false;
@@ -163,6 +171,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			stickerPlaced.Add (currentStickerObject);
 			currentStickerObject = null;
 			Trash.SetActive (false);
+			stickerButton.gameObject.SetActive (true);
+			trashButton.gameObject.SetActive (false);
 			disableStickers ();
 			firstTouchDown = false;
 
@@ -188,6 +198,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			isRePositionObject = false;
 			firstTouchDown = false;
 			Trash.SetActive (false);
+			stickerButton.gameObject.SetActive (true);
+			trashButton.gameObject.SetActive (false);
 
 
 		}
@@ -204,6 +216,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		firstTouchDown = true;
 		currentStickerObject = obj;
 		Trash.SetActive (true);
+		stickerButton.gameObject.SetActive (false);
+		trashButton.gameObject.SetActive (true);
 		mainScroller.SetActive (false);
 		isRePositionObject = true;
 	}
@@ -267,6 +281,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		currentStickerObject.transform.position = new Vector3 (0.0f, 0.0f, -6.0f);
 		mainScroller.SetActive (false);
 		Trash.SetActive (true);
+		stickerButton.gameObject.SetActive (false);
+		trashButton.gameObject.SetActive (true);
 
 	}
 
