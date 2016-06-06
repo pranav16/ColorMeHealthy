@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Analytics;
+
 public class PaintBrush : MonoBehaviour {
 
     enum States { touchbegin, touchend, drawImage, ready,earserOn, waitForFirstTouch };
@@ -27,7 +27,7 @@ public class PaintBrush : MonoBehaviour {
     void Start()
     {
 		if(SceneManager.GetActiveScene ().name == "PaintScreen")
-			Analytics.CustomEvent("Paint Screen",new Dictionary<string, object>());
+			FindObjectOfType<AnalyticsSystem> ().CustomEvent("Paint Screen",new Dictionary<string, object>());
         currentState = States.waitForFirstTouch;
         touchLocations = new List<Vector3>();
         lineGameObjects = new List<GameObject>();
@@ -146,7 +146,7 @@ public class PaintBrush : MonoBehaviour {
 				}
 			}
             Vector3 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            touchPosition.z = -1.0f;
+            touchPosition.z = -6.0f;
             touchLocations.Add(touchPosition);
             currentState = States.touchbegin;
             GameObject lineDrawn = Instantiate(touchSprite, touchPosition, Quaternion.identity) as GameObject;
@@ -263,7 +263,7 @@ public class PaintBrush : MonoBehaviour {
 		currentState = States.earserOn;
 		colourPallet [1].GetComponent<AudioSource> ().Play ();
 
-		Analytics.CustomEvent ("Paint Screen Earser Clicked",new Dictionary<string, object>());
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Paint Screen Earser Clicked",new Dictionary<string, object>());
 	}
 
 	public bool checkForPaintTiles(string collider)
@@ -356,7 +356,7 @@ public class PaintBrush : MonoBehaviour {
 		if (isButton) {
 			
 			colourPallet [0].GetComponent<AudioSource> ().Play ();
-			Analytics.CustomEvent("Paint Selected", new Dictionary<string, object>
+			FindObjectOfType<AnalyticsSystem> ().CustomEvent("Paint Selected", new Dictionary<string, object>
 				{
 					{ "Paint Selected", collider }
 

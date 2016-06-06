@@ -7,7 +7,7 @@ public struct QuestData
 	public string name;
 	public string trackerId;
 	public float questId;
-	public bool isDaily;
+	public bool  isDaily;
 	public float duration;
 	public float totalQuantity;
 	public float currentCounter;
@@ -151,7 +151,7 @@ public class QuestSystem : MonoBehaviour
 			pData.AddField ("RewardQuantity", quest.rewardQuantity);
 			entries.Add (pData);
 		}
-		string fileName = Application.persistentDataPath + "/Color" + "QuestSaveData";
+		string fileName = Application.persistentDataPath + "/Color" + "QuestSaveData.json";
 		System.IO.File.WriteAllText (fileName,entries.Print());
 	}
 

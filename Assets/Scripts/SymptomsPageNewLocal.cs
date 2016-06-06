@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.SceneManagement;
-using UnityEngine.Analytics;
+
 
 public class SymptomsPageNewLocal : MonoBehaviour {
 
@@ -22,7 +22,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 	enum states {Ready,LoadFile,Updatevalues,Done};
 	states state;
 	void Start () {
-		Analytics.CustomEvent("Symptoms Local Page", new Dictionary<string, object>
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Local Page", new Dictionary<string, object>
 			{
 				{ "body part", bodyPartSelected },
 
@@ -224,7 +224,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			}
 		}
 
-		Analytics.CustomEvent ("Symptoms Local Body part", analytics);
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent ("Symptoms Local Body part", analytics);
 		SymptomsPageNewMain.finalSymptoms [bodyPartSelected] = selectedSymptom;
 		symptomNodes [0].GetComponent<AudioSource> ().Play ();
 		SceneManager.LoadScene("SymptomsPageNew");

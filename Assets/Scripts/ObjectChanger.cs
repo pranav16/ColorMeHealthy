@@ -73,7 +73,8 @@ public class ObjectChanger : MonoBehaviour {
 								dailyAssociatedObject.SetActive (true);
 								Invoke ("deleteAssociatedObject", 2);
 								canChange = false;
-
+								FindObjectOfType<AnalyticsSystem> ().CustomEvent("Water_Plant",new Dictionary<string, object>());
+								FindObjectOfType<StickerHomeScreenBehaviour> ().setProgressionInGame ();
 
 							}
 							if(audioEffect && !audioEffect.isPlaying)

@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Analytics;
+
 public class SymptomsPageNewMain : MonoBehaviour {
 
 	enum States {touchbegin,touchend,drawImage,ready,waitForFirstTouch};
@@ -32,7 +32,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Analytics.CustomEvent("Main Symptoms Page",new Dictionary<string, object>());
+		
 		firstTouches = 0;
 		currentState = States.waitForFirstTouch;
 		touchLocations = new List<Vector3>();
@@ -42,7 +42,8 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		else
 			hotLoadMainSymptoms();
 		loadAndSetCustomization ();
- 		FindObjectOfType<QuestSystem> ().updateCounters ("Genral_Symptoms");
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Fill_Symptoms",new Dictionary<string, object>());
+ 		
 //		string filePath = "Symptoms.json";
 //		string fileName = Application.persistentDataPath + "/Color" + filePath;
 //		System.IO.File.Delete (fileName);
@@ -156,7 +157,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 				Debug.Log(hit.collider.transform.position);
 				bodyPartSelected = hit.collider.name;
 				SymptomsPageNewLocal.bodyPartSelected = bodyPartSelected;
-				Analytics.CustomEvent("Symptoms Main Page body part selected", new Dictionary<string, object>
+				FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Main Page body part selected", new Dictionary<string, object>
 					{
 						{ "body part", bodyPartSelected },
 
@@ -403,7 +404,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	{
 		createMainSymptoms();
 		buildJSONFile ();
-		Analytics.CustomEvent ("Symptoms Main save clicked",new Dictionary<string, object>());
+		//FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Main save clicked",new Dictionary<string, object>());
 
 	}
 
@@ -454,7 +455,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			}
 			BodyParts.AddField(table.getPartName (), obj);
 		}
-		  Analytics.CustomEvent ("Sysmtoms Page Final Symptom",analytics);
+		//FindObjectOfType<AnalyticsSystem> ().CustomEvent ("Sysmtoms Page Final Symptom",analytics);
 		  Entries.Add(json);
 		  string serializedJson = mainJson.Print();
 		  Debug.Log(mainJson.Print());
@@ -502,7 +503,6 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			BodyParts.AddField (table.getPartName (), obj);
 		}
 	        entries.Add(json);
-		    Analytics.CustomEvent ("Sysmtoms Page Final Symptom",analytics);
 	        string serializedJson = mainJson.Print();
 	        Debug.Log(mainJson.Print());   
 	        System.IO.File.WriteAllText(fileName, serializedJson);
@@ -523,13 +523,14 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		otherSymptoms.text = "";
 		finalSymptoms.Clear();
 		questions [0].gameObject.GetComponent<AudioSource> ().Play ();
-		Analytics.CustomEvent ("Symptoms Main Earse Clicked",new Dictionary<string, object>()); 
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent ("Symptoms Main Earse Clicked",new Dictionary<string, object>()); 
 
 
 	}
 	public void loadAndSetCustomization()
 	{
-		//Camera.main.GetComponent<GenderSelector> ().setInitialStates();
+		FindObjectOfType<GenderSelector> ().setInitialStates();
+
 		string filePath = "CurrentCustomization.json";
 		string fileName = Application.persistentDataPath + "/Color" + filePath;
 		if (!System.IO.File.Exists (fileName))return;

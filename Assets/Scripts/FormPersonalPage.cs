@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEngine.Analytics;
+
 
 public class FormPersonalPage : MonoBehaviour {
 
@@ -83,7 +83,7 @@ public class FormPersonalPage : MonoBehaviour {
 		Debug.Log(json.Print());   
 		System.IO.File.WriteAllText(fileName, serializedJson);
 		Camera.main.GetComponent<ColorObjectHandler> ().saveCustomization ();
-		Analytics.CustomEvent("Customisation Form", new Dictionary<string, object>
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Customisation Form", new Dictionary<string, object>
 			{
 				{ "name", name.text },
 				{ "color", color.text },

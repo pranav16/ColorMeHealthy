@@ -6,7 +6,7 @@ public class TitleScreen : MonoBehaviour {
 	int numberOfClicks;
 	// Use this for initialization
 	void Start () {
-		//PlayerPrefs.DeleteAll ();
+		freshBuild ();
 	}
 	
 	// Update is called once per frame
@@ -18,5 +18,21 @@ public class TitleScreen : MonoBehaviour {
 	public void startClicked()
 	{
 		SceneManager.LoadScene("MainSelectionScreen");
+	}
+
+	public void freshBuild()
+	{
+		PlayerPrefs.DeleteAll ();
+		System.IO.File.Delete ( Application.persistentDataPath + "/Color" + "StickersMain.json");
+		System.IO.File.Delete ( Application.persistentDataPath + "/Color" + "Symptoms.json");
+		System.IO.File.Delete ( Application.persistentDataPath + "/Color" + "CurrentCustomization.json");
+		System.IO.File.Delete ( Application.persistentDataPath + "/Color" + "QuestSaveData.json");
+		System.IO.File.Delete ( Application.persistentDataPath + "/Color" + "Dairy.json");
+		System.IO.File.Delete ( Application.persistentDataPath + "/Color" + "Personal.json");
+		System.IO.File.Delete ( Application.persistentDataPath +"/color" + "Analytics.json");
+
+
+
+
 	}
 }

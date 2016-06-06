@@ -1,15 +1,51 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-public class TabsHandler : MonoBehaviour {
+using System.Collections.Generic;
 
+public class TabsHandler : MonoBehaviour
+{
+
+	public GameObject GiftTab;
+	public GameObject StatusTab;
+	public List<Sprite>giftTabsIcons;
+	public List<Sprite>statusTabIcons;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+		initializeTabs ();
+	}
+
+	int progressionInGame()
+	{
+		int count = 0;
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Saved_Picture") > 0)
+			count ++;
+		if (  FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Water_Plant") > 0)
+			count ++;
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Completed_Goal") > 3)
+			count++;
+		if ( FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Write_Dairy") > 0)
+		count ++;
+		if ( FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Fill_Symptoms") > 0)
+			count ++;
+
+		return count;
+	}
+
+	void initializeTabs()
+	{
+		if (GiftTab == null || StatusTab == null)
+			return;
+		int status = progressionInGame();
+		GiftTab.GetComponent<SpriteRenderer> ().sprite = giftTabsIcons [status];
+		StatusTab.GetComponent<SpriteRenderer> ().sprite = statusTabIcons [status];
 	
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 	
 		if (Input.GetMouseButtonDown (0)) {
 			RaycastHit hit;
@@ -18,9 +54,10 @@ public class TabsHandler : MonoBehaviour {
 				if (hit.collider.name != "Blocker")
 					handleTabs (hit.collider.name);
 			}
+		}
 	}
-}
-	public bool handleTabs(string tabs)
+
+	public bool handleTabs (string tabs)
 	{
 		bool isButton = false;
 		string sceenToLoad = "MainSelectionScreen";
@@ -45,27 +82,33 @@ public class TabsHandler : MonoBehaviour {
 			sceenToLoad = "HistoryScene";
 			isButton = true;
 			break;
+		case "GiftTab":
+			{
+				GiftTab.SetActive (!GiftTab.activeInHierarchy);
+				StatusTab.SetActive (!StatusTab.activeInHierarchy);
+				break;
+			}
 
 
 
 		}
 		if (isButton)
-		Camera.main.GetComponent<AudioSource> ().Play();
-		if(isButton)
-			SceneManager.LoadScene(sceenToLoad);
+			Camera.main.GetComponent<AudioSource> ().Play ();
+		if (isButton)
+			SceneManager.LoadScene (sceenToLoad);
 		return isButton;
 	}
 
-	public void backButtonClicked()
+	public void backButtonClicked ()
 	{
-		Camera.main.GetComponent<AudioSource> ().Play();
-		SceneManager.LoadScene("MainSelectionScreen");
+		Camera.main.GetComponent<AudioSource> ().Play ();
+		SceneManager.LoadScene ("MainSelectionScreen");
 	}
 
-	public void submitButtonClicked()
+	public void submitButtonClicked ()
 	{
-		Camera.main.GetComponent<AudioSource> ().Play();
-		SceneManager.LoadScene("MainSelectionScreen");
+		Camera.main.GetComponent<AudioSource> ().Play ();
+		SceneManager.LoadScene ("MainSelectionScreen");
 	}
 
 }

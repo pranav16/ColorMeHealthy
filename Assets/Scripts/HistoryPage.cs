@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEngine.Analytics;
+
 
 public class HistoryPage : MonoBehaviour {
 	 struct MemoDescriptor
@@ -58,11 +58,8 @@ public class HistoryPage : MonoBehaviour {
 		Debug.Log(now.Month.ToString());
 		month = "0"+ now.Month.ToString();
 		fillListForDate (month, year);
-
 		monthSelected.value = now.Month -1;
-		
-
-		Analytics.CustomEvent("History Page",new Dictionary<string, object>());
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("History Page",new Dictionary<string, object>());
 
 	}
 	
@@ -158,7 +155,7 @@ public class HistoryPage : MonoBehaviour {
 				GameObject obj =	createButton (desciptor.date);
 				positionY -= obj.GetComponent<RectTransform> ().rect.size.y;
 				obj.GetComponent<RectTransform> ().anchoredPosition = new Vector2(0, positionY);
-				float diffHeight = obj.GetComponent<RectTransform> ().rect.y/2;
+				//float diffHeight = obj.GetComponent<RectTransform> ().rect.y/2;
 				GameObject img = createSmiley (desciptor.mood);
 				if (img) {
 					img.GetComponent<RectTransform> ().anchoredPosition = new Vector2(-obj.GetComponent<RectTransform>().rect.width/2 - 15, positionY);
@@ -188,7 +185,7 @@ public class HistoryPage : MonoBehaviour {
 
 
 		}
-		Analytics.CustomEvent("History Page Drop down Selected", new Dictionary<string, object>
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("History Page Drop down Selected", new Dictionary<string, object>
 			{
 				{ "Month", month },
 				{ "Year", year }
@@ -212,7 +209,7 @@ public class HistoryPage : MonoBehaviour {
 	public void SymptomClicked(Button button)
 	{
 		string imageSrc = "";
-		Analytics.CustomEvent("History Page Symptom Selected", new Dictionary<string, object>
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("History Page Symptom Selected", new Dictionary<string, object>
 			{
 				{ "SymptomSlected", button.name }
 			});
@@ -241,7 +238,7 @@ public class HistoryPage : MonoBehaviour {
 		clearSymptomsText ();
 		memoText.text = "";
 		selectedDate.text = button.name.Replace("_","/");
-		Analytics.CustomEvent("History Page Date Selected", new Dictionary<string, object>
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("History Page Date Selected", new Dictionary<string, object>
 			{
 				{ "Date", button.name }
 

@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
+
 public class ColorObjectHandler : MonoBehaviour {
 	
 	public List<GameObject> m_colorObjects;
@@ -15,7 +15,7 @@ public class ColorObjectHandler : MonoBehaviour {
 //		string filePath = "CurrentCustomization.json";
 //		string fileName = Application.persistentDataPath + "/Color" + filePath;
 //		System.IO.File.Delete (fileName);
-
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("CustomisationScreen",new Dictionary<string, object>());
 	}
 
 
@@ -45,7 +45,7 @@ public class ColorObjectHandler : MonoBehaviour {
 				for (int i = 0; i < bodyParts.Count; i++) {
 					
 					bodyParts [i].GetComponent<Customisation> ().setCurrentColor (hit.collider.name, colorSelected);
-					Analytics.CustomEvent("Customisation color selection", new Dictionary<string, object>
+					FindObjectOfType<AnalyticsSystem> ().CustomEvent("Customisation color selection", new Dictionary<string, object>
 						{
 							{ "Customisation Name", hit.collider.name },
 							{ "color", color.name }
@@ -62,7 +62,7 @@ public class ColorObjectHandler : MonoBehaviour {
 		} else if(color){
 		
 			Vector3 position =	Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			position.z = -5.0f;
+			position.z = -7.0f;
 			color.transform.position = position;
 			color.SetActive (true);
 

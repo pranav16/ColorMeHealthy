@@ -25,6 +25,12 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 	public Button trashButton;
 	// Use this for initialization
 	public GameObject dailyRewardPopUp;
+	public List<Sprite> giftIcons;
+	public List<Sprite>nextTasks;
+	public Image giftIcon;
+	public Image nextTask;
+
+
 	void Start () {
 		
 		firstTouchDown = false;
@@ -33,6 +39,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 	
 		foreach (Button btn in stickerButtons) {
 			spriteNameToButtonMap [btn.image.sprite.name] = btn;
+			setProgressionInGame ();
 
 		}
 
@@ -62,7 +69,52 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		LoadScene();
 
 	}
+
+	int progressionInGame()
+	{
+		int count = 0;
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Saved_Picture") > 0)
+			count ++;
+		if (  FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Water_Plant") > 0)
+			count ++;
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Completed_Goal") > 3)
+			count++;
+		if ( FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Write_Dairy") > 0)
+			count ++;
+		if ( FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Fill_Symptoms") > 0)
+			count ++;
+
+		return count;
+	}
+	int getNextStatus()
+	{
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Fill_Symptoms") < 0)
+			return 0;
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Saved_Picture") < 0)
+			return 1;
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Completed_Goal") < 3)
+			return 2;
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Write_Dairy") < 0)
+			return 3;
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Water_Plant") < 0)
+			return 4;
+	  
+		return 0;
+	}
+
 		
+	public void setProgressionInGame()
+	{
+		if (giftIcon == null || nextTask== null)
+			return;
+		int status = progressionInGame();
+		giftIcon.GetComponent<Image> ().sprite = giftIcons [status];
+
+		nextTask.GetComponent<Image> ().sprite = nextTasks [getNextStatus()];
+		if (status == 5)
+			giftIcon.GetComponent<Button> ().interactable = true;
+
+	}
 
 	public void UnlockStickers(int index)
 	{
@@ -81,7 +133,6 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		if (index > 0)
 			unlockedImage = index - 1;
 		dailyRewardUnlocked.image.sprite = stickerButtons [unlockedImage].image.sprite;
-	
 		dailyRewardUnlocked.gameObject.SetActive (true);
 	}
 
@@ -272,10 +323,31 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 
 	}
 
+	public void giftButtonClicked()
+	{
+		int currentProgressionDay = PlayerPrefs.GetInt("progressionGift", System.DateTime.Now.DayOfYear - 1);
+		if (currentProgressionDay < System.DateTime.Now.DayOfYear) {
+			PlayerPrefs.SetInt ("progressionGift", System.DateTime.Now.DayOfYear);
+
+			int giftCount = PlayerPrefs.GetInt ("stickersunlocked", 1) + 1;
+			PlayerPrefs.SetInt ("stickersunlocked", giftCount + 1);
+			index = giftCount;
+			PlayerPrefs.Save ();
+			foreach (Button btn in giftButtons)
+				btn.gameObject.SetActive (true);
+			dailyRewardUnlocked.gameObject.SetActive (false);
+			dailyRewardPopUp.SetActive (true);
+			foreach (GameObject obj in objectsToBeDisabled) {
+				BoxCollider[]colliders = obj.GetComponentsInChildren<BoxCollider> ();
+				foreach (BoxCollider col in colliders)
+					col.enabled = false;
+			}
+		}
+		UnlockStickers (index);
+	}
+
 	public void StickerClicked(Button button)
 	{
-		//if(Button.)
-
 		currentStickerObject = Instantiate(stickerObjectToInstaniate);
 		currentStickerObject.GetComponent<SpriteRenderer> ().sprite = button.image.sprite;
 		currentStickerObject.transform.position = new Vector3 (0.0f, 0.0f, -6.0f);

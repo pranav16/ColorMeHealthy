@@ -1,25 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
+
 
 public class Customisation : MonoBehaviour {
 
-	public List<GameObject> m_customisableParts;
+	public List<Sprite> m_customisableParts;
 
 	private int currentCount;
 	private int nextCount;
-	private GameObject currentActiveObject;
+	private SpriteRenderer render;
 	private ColorObjectHandler state;
 	//added because sometimes the Start gets a delayed call
 	public bool isReadyToReadSavedData;
 
 	// Use this for initialization
 	void Start () {
-		Analytics.CustomEvent ("CustomisationScreen",new Dictionary<string, object>());
+
+	
 		currentCount = 0;
 		nextCount = currentCount + 1;
-		currentActiveObject = m_customisableParts[0];
+		render = GetComponent<SpriteRenderer>();
+		render.sprite = m_customisableParts[0];
 		state = Camera.main.GetComponent<ColorObjectHandler> ();
 		isReadyToReadSavedData = true;
 
@@ -38,13 +40,12 @@ public class Customisation : MonoBehaviour {
 			if (Physics.Raycast (ray, out hit)) {
 				if (gameObject.name == hit.collider.name) {
 					for (int i = 0; i < m_customisableParts.Count; i++) {
-						m_customisableParts [i].SetActive (false);
+						
 						if (i == nextCount) {
-							m_customisableParts [i].SetActive (true);
-							currentActiveObject = m_customisableParts [i];
+							render.sprite = m_customisableParts[i];
 							currentCount = i;
 							Debug.Log ("**"+ gameObject.name +":"+ currentCount);
-							Analytics.CustomEvent("Customisation", new Dictionary<string, object>
+							FindObjectOfType<AnalyticsSystem> ().CustomEvent("Customisation", new Dictionary<string, object>
 								{
 									{ "Customisation Name", gameObject.name },
 									{ "id", currentCount }
@@ -61,7 +62,7 @@ public class Customisation : MonoBehaviour {
 
 			}
 			if(m_customisableParts.Count < 2)
-				m_customisableParts [0].SetActive (true);
+			render.sprite = m_customisableParts[0];
 		
 	}
 
@@ -69,40 +70,32 @@ public class Customisation : MonoBehaviour {
 	{
 		if (gameObject.name != name)
 			return;
-		
-		SpriteRenderer currentSprite = currentActiveObject.GetComponent<SpriteRenderer> ();
-		currentSprite.color = color;
+		render.color = color;
 
 	}
 	public void setActiveState(bool value)
 	{
 		for (int i = 0; i < m_customisableParts.Count; i++) {
-			m_customisableParts [i].SetActive (value);
+			//m_customisableParts [i].SetActive (value);
+
 		}
 	}
 
 	public void setCurrentState(int currentState,Color color)
 	{
 		Debug.Log ("++"+ gameObject.name +":"+ currentState);
-		for (int i = 0; i < m_customisableParts.Count; i++) {
-			if(i != currentState)
-			m_customisableParts [i].SetActive (false);
-		}
 		currentCount = currentState;
 		nextCount = currentCount+ 1;
-		m_customisableParts[currentCount].SetActive (true);
-		currentActiveObject = m_customisableParts [currentCount];
-		SpriteRenderer currentSprite = currentActiveObject.GetComponent<SpriteRenderer> ();
-		currentSprite.color = color ;
+		render.sprite = m_customisableParts[currentCount];
+
+		render.color = color ;
 		isReadyToReadSavedData = false;
 		Debug.Log ("--"+ gameObject.name +":"+ currentCount);
 	}
 
 	public Color getCurrentColor()
 	{
-		SpriteRenderer currentSprite = currentActiveObject.GetComponent<SpriteRenderer> ();
-
-		return currentSprite.color;
+		return render.color;
 	}
 	public int getCurrentState()
 	{

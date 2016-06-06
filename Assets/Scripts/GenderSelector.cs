@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine.Analytics;
 public class GenderSelector : MonoBehaviour {
 
-	public List<GameObject> boyParts;
+	public GameObject boy;
 	 
-	public List<GameObject> girlParts;
+	public GameObject girl;
 	public GameObject bg;
 	public List<Sprite> listOfBgs;
 
@@ -24,18 +24,18 @@ public class GenderSelector : MonoBehaviour {
 	public void setInitialStates()
 	{
 		int gender =  PlayerPrefs.GetInt("Gender",0);
-		for (int i = 0; i < boyParts.Count; i++) {
+
 			if(gender == 0)
 			{
-				boyParts [i].SetActive (true);
-				girlParts [i].SetActive (false);
+				boy.SetActive (true);
+				girl.SetActive (false);
 			}
 			else
 			{
-				boyParts [i].SetActive (false);
-				girlParts [i].SetActive (true);
+				boy.SetActive (false);
+				girl.SetActive (true);
 			}
-		}
+
 //		if (gender == 1)
 //			girlParts [5].SetActive (true);
 //		else if (gender == 0)
@@ -44,6 +44,7 @@ public class GenderSelector : MonoBehaviour {
 	private void loadCurrentBg()
 	{
 		int index = PlayerPrefs.GetInt ("currentBackgroundImage", 0);
+		if(bg)
 		bg.GetComponent<SpriteRenderer> ().sprite = listOfBgs [index];
 	}
 
@@ -62,11 +63,10 @@ public class GenderSelector : MonoBehaviour {
 	{
 		//by design number of componets for girl == boys so we'll just use a single loop 
 		Camera.main.GetComponent<AudioSource> ().Play();
-		for (int i = 0; i < boyParts.Count; i++) {
-			boyParts [i].SetActive (true);
-			girlParts [i].SetActive (false);
-		}
-	//	girlParts [5].SetActive (false);
+
+		boy.SetActive (true);
+		girl.SetActive (false);
+
 		Gender gender = Gender.Male;
 		Analytics.SetUserGender(gender);
 		PlayerPrefs.SetInt("Gender",0);
@@ -77,10 +77,8 @@ public class GenderSelector : MonoBehaviour {
 	{
 		Camera.main.GetComponent<AudioSource> ().Play();
 		//by design number of componets for girl == boys so we'll just use a single loop 
-		for (int i = 0; i < boyParts.Count; i++) {
-			boyParts [i].SetActive (false);
-			girlParts [i].SetActive (true);
-		}
+		boy.SetActive (false);
+		girl.SetActive (true);
 	//	girlParts [5].SetActive (true);
 		Gender gender = Gender.Female;
 		Analytics.SetUserGender(gender);

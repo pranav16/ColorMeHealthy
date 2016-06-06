@@ -8,7 +8,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
+
 
 public class MenuHadlerMainScreen : MonoBehaviour {
 
@@ -20,10 +20,10 @@ public class MenuHadlerMainScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//PlayerPrefs.DeleteAll ();
-		Analytics.CustomEvent("Main  Menu",new Dictionary<string, object>());
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Main  Menu",new Dictionary<string, object>());
 		
 		loadAndSetCustomization ();
-		int dayOfYear = PlayerPrefs.GetInt("dayofyeardailyreward",System.DateTime.Now.DayOfYear - 1 );
+		//int dayOfYear = PlayerPrefs.GetInt("dayofyeardailyreward",System.DateTime.Now.DayOfYear - 1 );
 		int currentDayOfYear = System.DateTime.Now.DayOfYear;
 	
 
