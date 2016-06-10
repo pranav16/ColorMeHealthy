@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 public class ColorObjectHandler : MonoBehaviour {
 	
-	public List<GameObject> m_colorObjects;
-	private GameObject color;
+	//public List<GameObject> m_colorObjects;
+	public GameObject color;
 	public List<GameObject>bodyParts;
 	bool touchStarted;
 
@@ -27,14 +27,14 @@ public class ColorObjectHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		loadAndSetCustomization ();
-		if (color && !touchStarted) {
+		if (color.activeInHierarchy && !touchStarted) {
 			touchStarted = true;
 			Vector3 position =	Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			position.z = -5.0f;
 			color.transform.position = position;
 			color.SetActive (true);
 			
-		} else if (color && touchStarted && Input.GetMouseButtonUp (0)) {
+		} else if (color.activeInHierarchy && touchStarted && Input.GetMouseButtonUp (0)) {
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			Color colorSelected = color.GetComponent<SpriteRenderer> ().color;
@@ -55,11 +55,11 @@ public class ColorObjectHandler : MonoBehaviour {
 					
 			}
 			color.SetActive (false);
-			color = null;
+			//color = null;
 			touchStarted = false;
 		
 		
-		} else if(color){
+		} else if(color.activeInHierarchy){
 		
 			Vector3 position =	Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			position.z = -7.0f;
@@ -72,53 +72,12 @@ public class ColorObjectHandler : MonoBehaviour {
 
 	public void setColorObject(Button button)
 	{
-
-		string buttonName = button.name;
-		switch(buttonName)
-		{
-
-		case "Red": 
-			color = m_colorObjects [0];
-			break;
-		case "Blue": 
-			color = m_colorObjects [1];
-			break;
-		case "Green": 
-			color = m_colorObjects [2];
-			break;
-		case "White": 
-			color = m_colorObjects [3];
-			break;
-		case "Black": 
-			color = m_colorObjects [4];
-			break;
-		case "Brown": 
-			color = m_colorObjects [5];
-			break;
-		case "NewWhite": 
-			color = m_colorObjects [6];
-			break;
-		case "NewBlack": 
-			color = m_colorObjects [7];
-			break;
-		case "Yellow": 
-			color = m_colorObjects [8];
-			break;
-		case "Orange": 
-			color = m_colorObjects [9];
-			break;
-		case "Purple": 
-			color = m_colorObjects [10];
-			break;
-		case "Pink": 
-			color = m_colorObjects [11];
-			break;
-		}
+		color.GetComponent<SpriteRenderer>().color = button.image.color;
 		Vector3 position =	Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		position.z = -1.0f;
 		color.transform.position = position;
 		//felt lazy added audio source for all color pops to this node.
-		m_colorObjects [0].GetComponent<AudioSource> ().Play();
+		color.GetComponent<AudioSource> ().Play();
 		color.SetActive(true);
 	
 	}

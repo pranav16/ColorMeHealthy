@@ -85,19 +85,19 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			bodyPartSelectedText.text = "Abdomen";
 			break;
 		case "RightToe":
-			filename = "Symptom_Foot";
+			filename = "Symptom_RFoot";
 			bodyPartSelectedText.text = "Right foot";
 			break;
 		case "LeftToe":
-			filename = "Symptom_Foot";
+			filename = "Symptom_LFoot";
 			bodyPartSelectedText.text = "Left foot";
 			break;
 		case "RightPalms":
-			filename = "Symptom_Hand";
+			filename = "Symptom_RHand";
 			bodyPartSelectedText.text = "Right Hand";
 			break;
 		case "LeftPalms":
-			filename = "Symptom_Hand";
+			filename = "Symptom_LHand";
 			bodyPartSelectedText.text = "Left Hand";
 			break;
 		case "Mouth":

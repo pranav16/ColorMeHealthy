@@ -4,17 +4,18 @@ using System.Collections.Generic;
 
 public class ObjectChanger : MonoBehaviour {
 
-	public List<GameObject> objects;
+	public List<Sprite> objects;
 	private int currentCount;
 	public bool hasDailyAssociatedObject;
 	public GameObject dailyAssociatedObject;
 	private bool canChange;
 	private int dayOfYear;
 	public AudioSource audioEffect;
+	private SpriteRenderer render;
 	// Use this for initialization
 	void Start () {
 		
-
+		render = GetComponent<SpriteRenderer> ();
 		canChange = true;
 		if (hasDailyAssociatedObject) {
 			dayOfYear = PlayerPrefs.GetInt(gameObject.name+"doy",System.DateTime.Now.DayOfYear - 1 );
@@ -25,7 +26,7 @@ public class ObjectChanger : MonoBehaviour {
 			}
 			else if (currentDayOfYear > dayOfYear) {
 				canChange = true;
-				objects [0].SetActive (false);
+				//objects [0].SetActive (false);
 			} else
 				canChange = false;
 		
@@ -33,10 +34,8 @@ public class ObjectChanger : MonoBehaviour {
 		currentCount = PlayerPrefs.GetInt(gameObject.name,0);
 
 		for (int i = 0; i < objects.Count; i++) {
-		
-			objects [i].SetActive (false);
 			if (i == currentCount) {
-				objects [i].SetActive (true);
+				render.sprite =  objects [i];
 			}
 		
 		}
@@ -62,11 +61,9 @@ public class ObjectChanger : MonoBehaviour {
 
 					}
 					for (int i = 0; i < objects.Count; i++) {
-
-						objects [i].SetActive (false);
 						if (i == currentCount) {
 							
-							objects [i].SetActive (true);
+							render.sprite =  objects [i];
 							PlayerPrefs.SetInt(gameObject.name,currentCount);
 							if (hasDailyAssociatedObject) {
 								PlayerPrefs.SetInt(gameObject.name+"doy", System.DateTime.Now.DayOfYear);

@@ -111,9 +111,11 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		giftIcon.GetComponent<Image> ().sprite = giftIcons [status];
 
 		nextTask.GetComponent<Image> ().sprite = nextTasks [getNextStatus()];
-		if (status == 5)
+		int currentProgressionDay = PlayerPrefs.GetInt("progressionGift", System.DateTime.Now.DayOfYear - 1);
+		if (status == 5 && currentProgressionDay < System.DateTime.Now.DayOfYear)
 			giftIcon.GetComponent<Button> ().interactable = true;
-
+		else if(status == 5)
+			giftIcon.GetComponent<Image> ().sprite = giftIcons [giftIcons.Count - 1];
 	}
 
 	public void UnlockStickers(int index)
@@ -134,6 +136,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			unlockedImage = index - 1;
 		dailyRewardUnlocked.image.sprite = stickerButtons [unlockedImage].image.sprite;
 		dailyRewardUnlocked.gameObject.SetActive (true);
+
 	}
 
 	// Update is called once per frame
@@ -328,7 +331,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		int currentProgressionDay = PlayerPrefs.GetInt("progressionGift", System.DateTime.Now.DayOfYear - 1);
 		if (currentProgressionDay < System.DateTime.Now.DayOfYear) {
 			PlayerPrefs.SetInt ("progressionGift", System.DateTime.Now.DayOfYear);
-
+			giftIcon.sprite = giftIcons [giftIcons.Count - 1];
 			int giftCount = PlayerPrefs.GetInt ("stickersunlocked", 1) + 1;
 			PlayerPrefs.SetInt ("stickersunlocked", giftCount + 1);
 			index = giftCount;

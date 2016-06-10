@@ -146,7 +146,7 @@ public class PaintBrush : MonoBehaviour {
 				}
 			}
             Vector3 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            touchPosition.z = -6.0f;
+            touchPosition.z = -8.0f;
             touchLocations.Add(touchPosition);
             currentState = States.touchbegin;
             GameObject lineDrawn = Instantiate(touchSprite, touchPosition, Quaternion.identity) as GameObject;
