@@ -229,7 +229,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 
 	public void  retainMainSymptoms()
 	{		
-		mainSymptoms.setPartName ("MainSymptoms");
+		mainSymptoms.setPartName ("General Symptoms");
 	
 		for (int i = 0;i < 7;i++)
 		{
@@ -288,7 +288,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	}
 	public void hotLoadMainSymptoms()
 	{
-		mainSymptoms.setPartName ("MainSymptoms");
+		mainSymptoms.setPartName ("General Symptoms");
 		for (int i = 0;i < 8;i++)
 		{
 			for (int j = 0; j < mainSymptoms.getSymptoms ().Count; j++) {
@@ -328,6 +328,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 
 	public void ToggleValueChanged(int value)
 	{
+		return;
 		int index = 0;
 		if (value > 1)
 			index = value - 1;
@@ -343,10 +344,18 @@ public class SymptomsPageNewMain : MonoBehaviour {
 
 	}
 
+	public void SliderValueChanged(int value)
+	{
+		int index = value;
+	
+		toggles [index].isOn = true;
+
+	}
+
 	public void createMainSymptoms()
 	{
 		BodyPartsTable table = new BodyPartsTable ();
-		table.setPartName ("MainSymptoms");
+		table.setPartName ("General Symptoms");
 		for (int i = 0;i < 7;i++)
 		{
 			int j = i;
@@ -398,25 +407,28 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			table.addSymptoms (symptom);
 
 		}
-		finalSymptoms ["MainSymptoms"] = table;
+		finalSymptoms ["General Symptoms"] = table;
 	}
 	public void savedClicked()
 	{
 		createMainSymptoms();
 		buildJSONFile ();
+		PdfExporter ex= FindObjectOfType<PdfExporter> ();
+		FindObjectOfType<PdfExporter> ().CreatePDF (finalSymptoms);
 		//FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Main save clicked",new Dictionary<string, object>());
 
 	}
 
 	void OnDestroy() {
 
-		savedClicked ();
+		//savedClicked ();
 	}
 
 
 	public void backButtonClicked()
 	{
 		Camera.main.GetComponent<AudioSource> ().Play();
+	
 		SceneManager.LoadScene("MainSelectionScreen");
 	}
 

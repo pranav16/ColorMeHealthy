@@ -18,6 +18,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 	public Text bodyPartSelectedText;
 	public List<Slider>howmuch;
 	public List<Slider>bothersome;
+	public List<Toggle>toggles;
 	// Use this for initialization
 	enum states {Ready,LoadFile,Updatevalues,Done};
 	states state;
@@ -142,6 +143,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 
 	public void valueChangedSymptom(Toggle toggle)
 	{
+		return;
 		bool value = toggle.isOn;
 		int index = int.Parse(toggle.name);
 		if (value) {
@@ -175,6 +177,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 		symptom.name = symptomsHeader [index].text;
 		symptom.painScale = slide.value;
 		selectedSymptoms [symptomsHeader [index].text] = symptom;
+		toggles [index].isOn = true;
 	}
 
 
@@ -187,6 +190,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 		symptom.name = symptomsHeader [index].text;
 		symptom.botherScale = slide.value;
 		selectedSymptoms [symptomsHeader [index].text] = symptom;
+		toggles [index].isOn = true;
 	}
 
 
@@ -206,7 +210,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 		//BodyPartsTable table = new BodyPartsTable ();
 		Dictionary<string,object> analytics =	new Dictionary<string, object> ();
 		int imageFileNumber = PlayerPrefs.GetInt(bodyPartSelected,0);
-		string filePath = Application.persistentDataPath +"/Images"+ bodyPartSelected+"_"+imageFileNumber+".png";
+		string filePath = Application.persistentDataPath +"/Images"+ bodyPartSelected+"_"+imageFileNumber+".jpg";
 		takeScreenShot (filePath);
 		imageFileNumber++;
 		PlayerPrefs.SetInt(bodyPartSelected, imageFileNumber);
@@ -233,21 +237,48 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 
 	public void takeScreenShot(string filePath)
 	{
-
+		//filePath = Application.dataPath + "/picture1.jpg";
 		RenderTexture shot = new RenderTexture(Screen.width,Screen.height,24);
-		//filePath = Application.dataPath + "/0.png";
 		Camera.main.targetTexture = shot;
 		Camera.main.Render();
 		RenderTexture.active = shot;
 		Texture2D tex = new Texture2D(Screen.width/2,Screen.height , TextureFormat.RGB24, false);
-		tex.ReadPixels(new Rect(0 ,0 ,Screen.width/2, Screen.height ),0,0);
+		tex.ReadPixels(new Rect(0 ,0 ,Screen.width/2, Screen.height),0,0);
+		int width = 400;
+		int height = 400;
+		Rect texR = new Rect(0,0,width,height);
+		_gpu_scale(tex,width,height,FilterMode.Trilinear);
+
+		// Update new texture
+		tex.Resize(width, height);
+		tex.ReadPixels(texR,0,0,true);
+		tex.Apply(true);  
 		//Texture2D tex = new Texture2D(Screen.width,Screen.height , TextureFormat.RGB24, false);
 		//tex.ReadPixels(new Rect(0,0 ,Screen.width,Screen.height),0,0);
 		tex.Apply();
 	
-		System.IO.File.WriteAllBytes(filePath,tex.EncodeToPNG());
+		System.IO.File.WriteAllBytes(filePath,tex.EncodeToJPG());
 
 	
+	}
+	static void _gpu_scale(Texture2D src, int width, int height, FilterMode fmode)
+	{
+		//We need the source texture in VRAM because we render with it
+		src.filterMode = fmode;
+		src.Apply(true);       
+
+		//Using RTT for best quality and performance. Thanks, Unity 5
+		RenderTexture rtt = new RenderTexture(width, height, 32);
+
+		//Set the RTT in order to render to it
+		Graphics.SetRenderTarget(rtt);
+
+		//Setup 2D matrix in range 0..1, so nobody needs to care about sized
+		GL.LoadPixelMatrix(0,1,1,0);
+
+		//Then clear & draw the texture to fill the entire RTT.
+		GL.Clear(true,true,new Color(0,0,0,0));
+		Graphics.DrawTexture(new Rect(0,0,1,1),src);
 	}
 
 	void loadBodyPartsTable()
