@@ -26,6 +26,7 @@ public class SketchPage : MonoBehaviour {
 	private Color colorSelected;
 	private List<List<GameObject>>undoStack;
 	private int stackIndex;
+	public GameObject savedShield;
 	//private List<GameObject> undoStack;
 
 
@@ -49,10 +50,16 @@ public class SketchPage : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
+		if (Input.GetMouseButtonDown (0) && savedShield.activeInHierarchy) {
+			savedShield.SetActive (false);
+			return;
+		}
+
+
 		if (Input.mousePosition.x > Screen.width/2) {
 			return;
 		}
-		Debug.Log (currentState + " size : " + undoStack.Count);
+
 		if (Input.GetMouseButton (0) && currentState == States.waitForFirstTouch) {
 			currentState = States.touchbegin;
 			return;
@@ -139,7 +146,8 @@ public class SketchPage : MonoBehaviour {
 		int currentArtNumber = PlayerPrefs.GetInt("paintingNumber",0);
 		string filePath = Application.persistentDataPath  +"/Paintings" + currentArtNumber + ".png";
 		takeScreenShot (filePath);
-		SceneManager.LoadScene ("MainSelectionScreen");
+		savedShield.SetActive (true);
+		//SceneManager.LoadScene ("MainSelectionScreen");
 	}
 
 	public void undoClicked()

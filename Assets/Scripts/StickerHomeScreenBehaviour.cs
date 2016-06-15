@@ -158,14 +158,14 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			
 		if (!firstTouchDown) {
 			Vector3 touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			touchPosition.z = -3.0f;
+			touchPosition.z = -9.0f;
 			currentStickerObject.transform.position = touchPosition;
 
 		}
 		if (Input.GetMouseButton (0)) {
 			firstTouchDown = true;
 			Vector3 touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			touchPosition.z = -3.0f;
+			touchPosition.z = -9.0f;
 			currentStickerObject.transform.position = touchPosition;
 			RaycastHit hitCheck;
 			Ray rayCheck = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -353,7 +353,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 	{
 		currentStickerObject = Instantiate(stickerObjectToInstaniate);
 		currentStickerObject.GetComponent<SpriteRenderer> ().sprite = button.image.sprite;
-		currentStickerObject.transform.position = new Vector3 (0.0f, 0.0f, -6.0f);
+		currentStickerObject.transform.position = new Vector3 (0.0f, 0.0f, -9.0f);
 		mainScroller.SetActive (false);
 		Trash.SetActive (true);
 		stickerButton.gameObject.SetActive (false);
@@ -372,7 +372,6 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		foreach (JSONObject obj in Stickers.list) {
 			GameObject sticker =  Instantiate(stickerObjectToInstaniate);
 			sticker.transform.position = new Vector3 (obj.GetField("positionX").f,obj.GetField("positionY").f,obj.GetField("positionZ").f);
-
 			sticker.GetComponent<SpriteRenderer> ().sprite = spriteNameToButtonMap[obj.GetField("name").str].image.sprite;
 			stickerPlaced.Add (sticker);
 		}

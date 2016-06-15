@@ -29,7 +29,8 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	public List<Slider>botherSome;
 	public Dropdown howManyTimes;
 	private int firstTouches;
-
+	public GameObject saveProgressBar;
+	public Image loadDone;
 	// Use this for initialization
 	void Start () {
 		
@@ -43,10 +44,6 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			hotLoadMainSymptoms();
 		loadAndSetCustomization ();
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Fill_Symptoms",new Dictionary<string, object>());
- 		
-//		string filePath = "Symptoms.json";
-//		string fileName = Application.persistentDataPath + "/Color" + filePath;
-//		System.IO.File.Delete (fileName);
 
 	}
 	bool checkForInteractableObjects(string name)
@@ -76,6 +73,12 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		loadAndSetCustomization ();
+		if (Input.GetMouseButtonDown (0) && loadDone.gameObject.activeInHierarchy) {
+			loadDone.gameObject.SetActive (false);
+			return;
+		}
+
+
 		if (Input.GetMouseButtonDown (0)) {
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -329,18 +332,18 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	public void ToggleValueChanged(int value)
 	{
 		return;
-		int index = 0;
-		if (value > 1)
-			index = value - 1;
-		if (toggles[value].isOn) {
-			botherSome [index].interactable = true;
-			howMuch [index].interactable = true;
-		} else {
-			botherSome [index].interactable = false;
-			howMuch [index].interactable = false;
-			botherSome [index].value = botherSome [index].minValue;
-			howMuch [index].value = howMuch [index].minValue;
-		}
+//		int index = 0;
+//		if (value > 1)
+//			index = value - 1;
+//		if (toggles[value].isOn) {
+//			botherSome [index].interactable = true;
+//			howMuch [index].interactable = true;
+//		} else {
+//			botherSome [index].interactable = false;
+//			howMuch [index].interactable = false;
+//			botherSome [index].value = botherSome [index].minValue;
+//			howMuch [index].value = howMuch [index].minValue;
+//		}
 
 	}
 
@@ -411,12 +414,18 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	}
 	public void savedClicked()
 	{
+		saveProgressBar.SetActive (true);
+		Invoke ("saveData", 1);
+	}
+
+	private void saveData()
+	{
 		createMainSymptoms();
 		buildJSONFile ();
-		PdfExporter ex= FindObjectOfType<PdfExporter> ();
 		FindObjectOfType<PdfExporter> ().CreatePDF (finalSymptoms);
-		//FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Main save clicked",new Dictionary<string, object>());
-
+		saveProgressBar.SetActive (false);
+		loadDone.gameObject.SetActive (true);
+		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Main save clicked",new Dictionary<string, object>());
 	}
 
 	void OnDestroy() {

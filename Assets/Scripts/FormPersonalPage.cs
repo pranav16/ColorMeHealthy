@@ -17,7 +17,7 @@ public class FormPersonalPage : MonoBehaviour {
 	public InputField thingThatAnnoysMe;
 	public InputField food;
 	public InputField favoriteThingToDo;
-
+	public GameObject saveShield;
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +28,10 @@ public class FormPersonalPage : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetMouseButtonDown (0) && saveShield.activeInHierarchy) {
+			saveShield.SetActive (false);
+		}
+
 	}
 
 	public void changeInNumericalFields()
@@ -62,9 +65,9 @@ public class FormPersonalPage : MonoBehaviour {
 	}
 
 
-	public void backClicked()
+	public void saveClicked()
 	{
-
+		
 		JSONObject json = new JSONObject ();
 		json.AddField("name",name.text);
 		json.AddField("color",color.text);
@@ -89,7 +92,7 @@ public class FormPersonalPage : MonoBehaviour {
 				{ "color", color.text },
 				{ "animal", animal.text }
 			});
-
+		saveShield.SetActive (true);
 		//SceneManager.LoadScene ("MainSelectionScreen");
 	}
 
