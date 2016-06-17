@@ -21,8 +21,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 	public Button dailyRewardUnlocked;
 	public List<Button> giftButtons;
 
-	public Button stickerButton;
-	public Button trashButton;
+	public GameObject stickerButton;
+	public GameObject trashButton;
 	// Use this for initialization
 	public GameObject dailyRewardPopUp;
 	public List<Sprite> giftIcons;
@@ -43,7 +43,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 
 		}
 
-	
+
 		index = PlayerPrefs.GetInt ("stickersunlocked", 1);
 		int dayOfYear = PlayerPrefs.GetInt("stickerUnlockDay",System.DateTime.Now.DayOfYear - 1);
 		if (dayOfYear < System.DateTime.Now.DayOfYear) {
@@ -105,6 +105,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		
 	public void setProgressionInGame()
 	{
+		
 		if (giftIcon == null || nextTask== null)
 			return;
 		int status = progressionInGame();
@@ -112,10 +113,17 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 
 		nextTask.GetComponent<Image> ().sprite = nextTasks [getNextStatus()];
 		int currentProgressionDay = PlayerPrefs.GetInt("progressionGift", System.DateTime.Now.DayOfYear - 1);
-		if (status == 5 && currentProgressionDay < System.DateTime.Now.DayOfYear)
+		if (status == 5 && currentProgressionDay < System.DateTime.Now.DayOfYear) {
 			giftIcon.GetComponent<Button> ().interactable = true;
-		else if(status == 5)
+			giftIcon.gameObject.GetComponent<Animator> ().enabled = true;
+		}
+		else if (status == 5) {
+			giftIcon.gameObject.GetComponent<Animator> ().enabled = false;
 			giftIcon.GetComponent<Image> ().sprite = giftIcons [giftIcons.Count - 1];
+			giftIcon.GetComponent<Button> ().enabled = false;
+			nextTask.gameObject.SetActive (false);
+		}
+
 	}
 
 	public void UnlockStickers(int index)
@@ -144,10 +152,18 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 
 		if (currentStickerObject == null) {
 
+		
+
 			if (Input.GetMouseButtonDown (0)) {
 				RaycastHit hitCheck;
 				Ray rayCheck = Camera.main.ScreenPointToRay (Input.mousePosition);
+			
 				if (Physics.Raycast (rayCheck, out hitCheck)) {
+					if(hitCheck.collider.name == "Stickers")
+					{
+						stickersButtonClicked();
+						return;
+					}
 					if (hitCheck.collider.name.Contains ("StickerPlacementObject") && !mainScroller.activeInHierarchy) {
 						StickerTrashClicked (hitCheck.collider.gameObject);
 					}
@@ -158,14 +174,14 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			
 		if (!firstTouchDown) {
 			Vector3 touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			touchPosition.z = -9.0f;
+			touchPosition.z = -6.0f;
 			currentStickerObject.transform.position = touchPosition;
 
 		}
 		if (Input.GetMouseButton (0)) {
 			firstTouchDown = true;
 			Vector3 touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			touchPosition.z = -9.0f;
+			touchPosition.z = -6.0f;
 			currentStickerObject.transform.position = touchPosition;
 			RaycastHit hitCheck;
 			Ray rayCheck = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -307,7 +323,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 				//obj.SetActive (false);
 			}
 
-
+			trashButton.gameObject.SetActive (true);
+			Trash.SetActive (true);
 			mainScroller.SetActive (true);
 		}
 
@@ -331,7 +348,10 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		int currentProgressionDay = PlayerPrefs.GetInt("progressionGift", System.DateTime.Now.DayOfYear - 1);
 		if (currentProgressionDay < System.DateTime.Now.DayOfYear) {
 			PlayerPrefs.SetInt ("progressionGift", System.DateTime.Now.DayOfYear);
+			giftIcon.GetComponent<Animator> ().enabled = false;
+			giftIcon.GetComponent<Button> ().interactable = false;
 			giftIcon.sprite = giftIcons [giftIcons.Count - 1];
+			nextTask.gameObject.SetActive (false);
 			int giftCount = PlayerPrefs.GetInt ("stickersunlocked", 1) + 1;
 			PlayerPrefs.SetInt ("stickersunlocked", giftCount + 1);
 			index = giftCount;
@@ -353,7 +373,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 	{
 		currentStickerObject = Instantiate(stickerObjectToInstaniate);
 		currentStickerObject.GetComponent<SpriteRenderer> ().sprite = button.image.sprite;
-		currentStickerObject.transform.position = new Vector3 (0.0f, 0.0f, -9.0f);
+		currentStickerObject.transform.position = new Vector3 (0.0f, 0.0f, -6.0f);
 		mainScroller.SetActive (false);
 		Trash.SetActive (true);
 		stickerButton.gameObject.SetActive (false);

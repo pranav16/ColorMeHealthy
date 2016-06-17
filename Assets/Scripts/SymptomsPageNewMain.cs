@@ -75,6 +75,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		loadAndSetCustomization ();
 		if (Input.GetMouseButtonDown (0) && loadDone.gameObject.activeInHierarchy) {
 			loadDone.gameObject.SetActive (false);
+			SceneManager.LoadScene ("MainSelectionScreen");
 			return;
 		}
 

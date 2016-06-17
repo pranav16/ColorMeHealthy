@@ -159,6 +159,11 @@ public class QuestSystem : MonoBehaviour
 	{
 		saveCurrentContext ();
 	}
-
+	void OnApplicationPause(bool paused)
+	{
+		if (paused) {
+			saveCurrentContext();
+		}
+	}
 
 }

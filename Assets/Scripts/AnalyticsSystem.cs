@@ -8,7 +8,7 @@ public class AnalyticsSystem : MonoBehaviour
 
 	private AnalyticsSystem instance;
 	private Dictionary<string,int> Counters;
-
+	private string startTimeStamp;
 	// Use this for initialization
 	void Start ()
 	{
@@ -23,6 +23,8 @@ public class AnalyticsSystem : MonoBehaviour
 
 	private bool init ()
 	{
+		//System.IO.File.Delete (Application.persistentDataPath + "/color" + "Analytics.json");
+		startTimeStamp = System.DateTime.Now.DayOfYear.ToString();
 		Counters = new Dictionary<string, int> ();
 		loadAnalytics ();
 		return true;
@@ -30,6 +32,10 @@ public class AnalyticsSystem : MonoBehaviour
 
 	public void UpdateCounter (string trackingID, int count = 1)
 	{
+		if (startTimeStamp != System.DateTime.Now.DayOfYear.ToString()) {
+			Counters.Clear ();
+			startTimeStamp = System.DateTime.Now.DayOfYear.ToString ();
+		}
 		if (Counters.ContainsKey (trackingID))
 			Counters [trackingID] += count;
 		else
@@ -39,6 +45,11 @@ public class AnalyticsSystem : MonoBehaviour
 
 	public int getCounterValue (string trackingID)
 	{
+		if (startTimeStamp != System.DateTime.Now.DayOfYear.ToString()) {
+			Counters.Clear ();
+			startTimeStamp = System.DateTime.Now.DayOfYear.ToString ();
+		}
+
 		if (Counters.ContainsKey (trackingID))
 			return Counters [trackingID];
 		return -1;
@@ -61,7 +72,7 @@ public class AnalyticsSystem : MonoBehaviour
 		JSONObject json = new JSONObject (jsonText);
 		if (!json.HasField (System.DateTime.Now.DayOfYear.ToString ()))
 			return;
-		
+		int date = System.DateTime.Now.DayOfYear;
 		JSONObject body = json.GetField (System.DateTime.Now.DayOfYear.ToString ());
 		foreach (JSONObject obj in body.list) {
 			string name = obj.GetField ("name").str;
@@ -89,5 +100,12 @@ public class AnalyticsSystem : MonoBehaviour
 	void OnApplicationQuit ()
 	{
 		saveAnalytics ();
+	}
+
+	void OnApplicationPause(bool paused)
+	{
+		if (paused) {
+			saveAnalytics();
+		}
 	}
 }

@@ -6,7 +6,7 @@ public class TitleScreen : MonoBehaviour {
 	int numberOfClicks;
 	// Use this for initialization
 	void Start () {
-		freshBuild ();
+	// freshBuild ();
 	}
 	
 	// Update is called once per frame

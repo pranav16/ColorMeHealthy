@@ -59,6 +59,11 @@ public class MenuHadlerMainScreen : MonoBehaviour {
 					return;
 				} else if (hit.collider.name == "watering_can") {
 				}
+			
+				else if(hit.collider.name == "ChangeBackground")
+				{
+					FindObjectOfType<GenderSelector>().changeBgImage();
+				}
 			}
                 
     }

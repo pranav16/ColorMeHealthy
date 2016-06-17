@@ -52,6 +52,7 @@ public class SketchPage : MonoBehaviour {
 	{
 		if (Input.GetMouseButtonDown (0) && savedShield.activeInHierarchy) {
 			savedShield.SetActive (false);
+			SceneManager.LoadScene ("MainSelectionScreen");
 			return;
 		}
 
