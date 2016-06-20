@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class TabsHandler : MonoBehaviour
 {
-
 	public GameObject GiftTab;
 	public GameObject StatusTab;
 	public List<Sprite>giftTabsIcons;

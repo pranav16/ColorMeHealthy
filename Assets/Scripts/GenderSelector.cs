@@ -67,8 +67,8 @@ public class GenderSelector : MonoBehaviour {
 		boy.SetActive (true);
 		girl.SetActive (false);
 
-		Gender gender = Gender.Male;
-		Analytics.SetUserGender(gender);
+		//Gender gender = Gender.Male;
+		//Analytics.SetUserGender(gender);
 		PlayerPrefs.SetInt("Gender",0);
 		PlayerPrefs.Save ();
 	}
@@ -80,8 +80,8 @@ public class GenderSelector : MonoBehaviour {
 		boy.SetActive (false);
 		girl.SetActive (true);
 	//	girlParts [5].SetActive (true);
-		Gender gender = Gender.Female;
-		Analytics.SetUserGender(gender);
+		//Gender gender = Gender.Female;
+		//Analytics.SetUserGender(gender);
 		PlayerPrefs.SetInt("Gender",1);
 		PlayerPrefs.Save ();
 	}

@@ -61,7 +61,7 @@ public class AnalyticsSystem : MonoBehaviour
 			UpdateCounter (trackingId, System.Convert.ToInt32 (data ["Count"]));
 		} else
 			UpdateCounter (trackingId);
-		Analytics.CustomEvent (trackingId, data);
+		//Analytics.CustomEvent (trackingId, data);
 	}
 
 	public void loadAnalytics ()
