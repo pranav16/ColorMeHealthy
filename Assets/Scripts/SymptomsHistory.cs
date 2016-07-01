@@ -21,6 +21,8 @@ public class SymptomsHistory : MonoBehaviour {
 	public Button dateSelectorReference;
 	public GameObject CLayerListOfDates;
 	public List<UILocalSymptomNode>symptomsNode;
+	public List<Text> generalSymptomsText;
+
 
 	private Dictionary<string,List<BodyPartsTable>> SymptomsMap;
 	void Start () {
@@ -37,7 +39,7 @@ public class SymptomsHistory : MonoBehaviour {
 	{
 		LoadSymptomsJson();
 		populateDateDropDowns();
-		populateListOfDates("06","2016");
+		populateListOfDates("07","2016");
 
 		return true;
 	}
@@ -61,30 +63,42 @@ public class SymptomsHistory : MonoBehaviour {
 				previousMonth = dateSplit[0];
 			}
 
-			monthSelector.AddOptions (months);
-			yearSelector.AddOptions (years);
+
 		}
-			
+		monthSelector.AddOptions (months);
+		yearSelector.AddOptions (years);
 		return true;
 	}
 
 	public  void monthValueChanged(int value)
 	{
+		string month = monthSelector.options [value].text;
+		string year = yearSelector.options [yearSelector.value].text;
+		populateListOfDates (month, year);
+
 
 	}
 	public  void yearValueChanged(int value)
 	{
-	
+		string month = monthSelector.options [monthSelector.value].text;
+		string year = yearSelector.options [value].text;
+		populateListOfDates (month, year);
 	}
 	public void dateSelected(Button button)
 	{
 		string id = button.GetComponentInChildren<Text> ().text.Replace ("/", "_");
+		populateSymptoms (id);
+	}
+	void populateSymptoms(string id)
+	{
 		if (SymptomsMap.ContainsKey (id)) {
 			List<BodyPartsTable> tables = SymptomsMap [id];
 			for (int i = 0 ;i< tables.Count ;i ++) {
 				BodyPartsTable table = tables [i];
-				if (table.getPartName ().Contains ("General Symptoms"))
+				if (table.getPartName ().Contains ("General Symptoms")) {
+					populateGeneralSymptoms (table);
 					continue;
+				}
 				symptomsNode [i].partName.text = table.getPartName ();
 				symptomsNode [i].parent.gameObject.SetActive (true);
 				byte [] textureData = System.IO.File.ReadAllBytes (table.getImagePath());
@@ -94,22 +108,70 @@ public class SymptomsHistory : MonoBehaviour {
 				symptomsNode [i].symptomImage.sprite = sprite;
 
 				for (int j = 0; j < table.getSymptoms ().Count; j++) {
-					
+
 					symptomsNode [i].BotherSymptom [j].text = table.getSymptoms()[j].botherScale.ToString("0.0");
 					symptomsNode [i].painSymptom [j].text = table.getSymptoms()[j].painScale.ToString("0.0");
 					symptomsNode [i].symptomName [j].text = table.getSymptoms () [j].name;
 
 				}
 
-
-			
-			
 			}
 
 			for (int k = tables.Count - 1; k < symptomsNode.Count; k++) {
 				symptomsNode [k].parent.gameObject.SetActive (false);
 			}
 
+
+
+		}
+
+	}
+		
+	void populateGeneralSymptoms(BodyPartsTable generalSymptoms)
+	{
+		
+		int indexForText = 0;
+		foreach (symptoms GeneralSymptom in  generalSymptoms.getSymptoms ()) {
+			generalSymptomsText [indexForText].text = "";
+			if (GeneralSymptom.name.Contains ("os_")) {
+				generalSymptomsText [indexForText].text = "Any other symptoms? ";
+				indexForText++;
+				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("os_", "");
+				indexForText++;
+
+			} else if (GeneralSymptom.name.Contains ("Bothersome_")) {
+				generalSymptomsText [indexForText].text = "What is bothering you the most? ";
+				indexForText++;
+				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("Bothersome_", "");
+				indexForText++;
+			}
+			else if (GeneralSymptom.name.Contains ("FeelingToday_")) {
+				generalSymptomsText [indexForText].text = "How are you feeling today? ";
+				indexForText++;
+				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("FeelingToday_", "");
+				indexForText++;
+			}
+			else if (GeneralSymptom.name.Contains ("Bestthing_")) {
+				generalSymptomsText [indexForText].text = "What is the best thing about today? ";
+				indexForText++;
+				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("Bestthing_", "");
+				indexForText++;
+			}
+			else if (GeneralSymptom.botherScale >= 0) {
+				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "?  Yes");
+				indexForText++;
+				generalSymptomsText [indexForText].text = "Pain: " + GeneralSymptom.painScale.ToString ("0.0") + " Bother: " + GeneralSymptom.botherScale.ToString ("0.0");
+				indexForText++;
+			}
+			else if(GeneralSymptom.name.Contains ("?") && GeneralSymptom.botherScale == -1.0f)
+			{
+				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "?  Yes");
+				indexForText++;
+				if (GeneralSymptom.name.Contains ("thrown")) {
+					generalSymptomsText [indexForText].text = "How many times ?: " + GeneralSymptom.painScale.ToString("0.0");
+					indexForText++;
+				}
+			}
 
 		
 		}
@@ -129,7 +191,7 @@ public class SymptomsHistory : MonoBehaviour {
 		}
 		 
 		CLayerListOfDates.GetComponent<RectTransform>().sizeDelta = new Vector2(0,dateEntries.Count * dateSelectorReference.gameObject.GetComponent<RectTransform>().rect.width);
-		float postionY = CLayerListOfDates.GetComponent<RectTransform>().rect.height/2 - dateSelectorReference.gameObject.GetComponent<RectTransform>().rect.height/2;
+		float postionY = CLayerListOfDates.GetComponent<RectTransform>().rect.height/2 - dateSelectorReference.gameObject.GetComponent<RectTransform>().rect.height;
 		foreach (string date in dateEntries) {
 			
 			Button dateB = GameObject.Instantiate (dateSelectorReference) as Button;
@@ -137,21 +199,12 @@ public class SymptomsHistory : MonoBehaviour {
 			dateB.gameObject.transform.SetParent (CLayerListOfDates.transform);
 			dateB.gameObject.SetActive (true);
 			dateB.gameObject.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (dateSelectorReference.gameObject.GetComponent<RectTransform>().anchoredPosition.x,postionY);
-			postionY -= dateSelectorReference.gameObject.GetComponent<RectTransform>().rect.height/2;
+			postionY -= dateSelectorReference.gameObject.GetComponent<RectTransform>().rect.height;
 
 		}
 			
 	}
-
-	void populateGenralSymptoms(BodyPartsTable table)
-	{
-	
-	}
-
-	void populateLocalSymptoms(List<BodyPartsTable> tables)
-	{
-	
-	}
+		
 	void LoadSymptomsJson()
 	{
 		
@@ -194,6 +247,8 @@ public class SymptomsHistory : MonoBehaviour {
 		}
 			
 	}
+
+
 
 
 }

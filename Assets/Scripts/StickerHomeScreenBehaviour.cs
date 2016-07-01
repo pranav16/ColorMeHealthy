@@ -38,6 +38,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		stickerPlaced = new List<GameObject> ();
 	
 		foreach (Button btn in stickerButtons) {
+			Debug.Log (btn.image.sprite.name);
 			spriteNameToButtonMap [btn.image.sprite.name] = btn;
 			setProgressionInGame ();
 

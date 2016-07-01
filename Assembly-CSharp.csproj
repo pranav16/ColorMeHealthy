@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\DailyRewardObject.cs" />
      <Compile Include="Assets\Scripts\DailyRewardsPage.cs" />
      <Compile Include="Assets\Scripts\Dailyrewards.cs" />
+     <Compile Include="Assets\Scripts\DairyHistoryPage.cs" />
      <Compile Include="Assets\Scripts\DisplayPaintingPage.cs" />
      <Compile Include="Assets\Scripts\Eraser.cs" />
      <Compile Include="Assets\Scripts\FormPersonalPage.cs" />
