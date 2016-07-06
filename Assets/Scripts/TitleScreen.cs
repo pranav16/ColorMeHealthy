@@ -19,6 +19,10 @@ public class TitleScreen : MonoBehaviour {
 	{
 		SceneManager.LoadScene("MainSelectionScreen");
 	}
+	public void helpClicked()
+	{
+		SceneManager.LoadScene("HelpScreen");
+	}
 
 	public void freshBuild()
 	{

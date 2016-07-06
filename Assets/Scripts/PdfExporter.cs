@@ -15,6 +15,7 @@ public class PdfExporter : MonoBehaviour {
 	// Use this for initialization
 	string		attacName;
 	PdfExporter instance;
+	TranslatorSnoMed translateToSnowMed;
 	// Use this for initialization
 	void Start () {
 		if (instance == null) {
@@ -29,6 +30,8 @@ public class PdfExporter : MonoBehaviour {
 	public void init()
 	{
 		attacName = Application.persistentDataPath + "/ColorMeHealthy.pdf";
+		translateToSnowMed = new TranslatorSnoMed ();
+		translateToSnowMed.Init ();
 	}
 
 	// Update is called once per frame
@@ -39,10 +42,13 @@ public class PdfExporter : MonoBehaviour {
 		pdfDocument myDoc = new pdfDocument("ColorMeHealthy","Me", false);
 		foreach (string key in finalSymptoms.Keys) {
 		pdfPage myFirstPage = myDoc.addPage();
+			string header = key;
+			if (translateToSnowMed.isKeyPresent (key))
+				header = translateToSnowMed.getSnoMedTermForUi (key).snoMedTerm;
 
-			myFirstPage.addText(key,10,730,predefinedFont.csHelveticaOblique,30,new pdfColor(predefinedColor.csDarkRed));
+			myFirstPage.addText(header,10,730,predefinedFont.csHelveticaOblique,30,new pdfColor(predefinedColor.csDarkRed));
 			//format general symptoms in its very own special way
-			if (finalSymptoms.ContainsKey ("General Symptoms")) {
+			if (key.Contains("General Symptoms")) {
 				int height = 700;
 				int fontsize = 20;
 				BodyPartsTable bodyParts = finalSymptoms [key];
@@ -70,9 +76,9 @@ public class PdfExporter : MonoBehaviour {
 					} else if (symptom.botherScale >= 0) {
 						myFirstPage.addText (symptom.name.Replace ("?", "?  Yes"), 0, height, predefinedFont.csCourier, fontsize,new pdfColor(predefinedColor.csDarkRed));
 						height -= fontsize;
-						myFirstPage.addText ("Pain: " + symptom.painScale.ToString("0.0"), 0, height, predefinedFont.csCourier, fontsize);
+						myFirstPage.addText ("Symptom Severity (attribute): " + symptomPointsToText((int)symptom.painScale), 0, height, predefinedFont.csCourier, fontsize);
 						height -= fontsize;
-						myFirstPage.addText ("Bother: " + symptom.botherScale.ToString("0.0"), 0, height, predefinedFont.csCourier, fontsize);
+						myFirstPage.addText ("Distress (finding): " + symptomPointsToText((int)symptom.botherScale), 0, height, predefinedFont.csCourier, fontsize);
 						height -= fontsize;
 					} else if (symptom.name.Contains ("?") && symptom.botherScale == -1.0f) {
 						myFirstPage.addText (symptom.name.Replace ("?", "?  Yes"), 0, height, predefinedFont.csCourier, fontsize,new pdfColor(predefinedColor.csDarkRed));
@@ -94,19 +100,21 @@ public class PdfExporter : MonoBehaviour {
 			/*Add Columns to a grid*/
 
 	
-			myTable.tableHeader.addColumn (new pdfTableColumn ("Symptom", predefinedAlignment.csCenter, 120));
-			myTable.tableHeader.addColumn (new pdfTableColumn ("Pain", predefinedAlignment.csLeft, 150));
-			myTable.tableHeader.addColumn (new pdfTableColumn ("Bother", predefinedAlignment.csLeft, 150));
+			myTable.tableHeader.addColumn (new pdfTableColumn ("Symptom", predefinedAlignment.csCenter, 200));
+			myTable.tableHeader.addColumn (new pdfTableColumn ("Symptom Severity (attribute)", predefinedAlignment.csLeft, 150));
+			myTable.tableHeader.addColumn (new pdfTableColumn ("Distress (finding)", predefinedAlignment.csLeft, 150));
 
 	
 
 			BodyPartsTable table = finalSymptoms [key];
 			foreach (symptoms symptom in  table.getSymptoms ()) {
 				pdfTableRow myRow = myTable.createRow ();
-			
-					myRow [0].columnValue = symptom.name;
-					myRow [1].columnValue = symptom.painScale.ToString ();
-					myRow [2].columnValue = symptom.botherScale.ToString ();
+				string symptomName = symptom.name;
+				if (translateToSnowMed.isKeyPresent (symptomName))
+					symptomName = translateToSnowMed.getSnoMedTermForUi(symptomName).snoMedTerm;
+					myRow [0].columnValue = symptomName;
+				myRow [1].columnValue = symptomPointsToText((int)symptom.painScale);
+				myRow [2].columnValue = symptomPointsToText((int)symptom.botherScale);
 
 				myTable.addRow (myRow);
 			}
@@ -132,6 +140,18 @@ public class PdfExporter : MonoBehaviour {
 		myDoc.createPDF(attacName);
 		mail ();
 		//myTable = null;
+	}
+
+	public string symptomPointsToText(int value)
+	{
+		switch (value)
+		{
+		case 1:
+			return "Symptom mild (finding) ";
+		case 2 : return "Symptom moderate (finding)";
+		case 3 :return "Symptom severe (finding)";
+		default :return "None" ;
+		}
 	}
 		
 	public void mail()

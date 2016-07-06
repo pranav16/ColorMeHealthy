@@ -31,7 +31,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 		selectedSymptom = new BodyPartsTable ();
 		selectedSymptoms = new Dictionary<string, symptoms> ();
 		Debug.Log (bodyPartSelected);
-		selectedSymptom.setPartName (bodyPartSelected);
+
 		state = states.Ready;
 		if (listOfSymptoms.Count > 0)
 			state = states.Updatevalues;
@@ -40,7 +40,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			loadBodyPartsTable ();
 		else if (state == states.Updatevalues)
 			updateUi ();
-			
+		selectedSymptom.setPartName (bodyPartSelectedText.text);
 
 	}
 	
@@ -87,11 +87,11 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			break;
 		case "RightToe":
 			filename = "Symptom_RFoot";
-			bodyPartSelectedText.text = "Right foot";
+			bodyPartSelectedText.text = "Right Foot";
 			break;
 		case "LeftToe":
 			filename = "Symptom_LFoot";
-			bodyPartSelectedText.text = "Left foot";
+			bodyPartSelectedText.text = "Left Foot";
 			break;
 		case "RightPalms":
 			filename = "Symptom_RHand";
@@ -141,9 +141,9 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			symptomNodes [i].SetActive (false);
 	}
 
+	//not in use anymore
 	public void valueChangedSymptom(Toggle toggle)
 	{
-		return;
 		bool value = toggle.isOn;
 		int index = int.Parse(toggle.name);
 		if (value) {
@@ -229,7 +229,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 		}
 
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent ("Symptoms Local Body part", analytics);
-		SymptomsPageNewMain.finalSymptoms [bodyPartSelected] = selectedSymptom;
+		SymptomsPageNewMain.finalSymptoms [bodyPartSelectedText.text] = selectedSymptom;
 		symptomNodes [0].GetComponent<AudioSource> ().Play ();
 		SceneManager.LoadScene("SymptomsPageNew");
 	}

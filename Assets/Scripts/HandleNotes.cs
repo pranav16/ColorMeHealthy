@@ -74,6 +74,13 @@ public class HandleNotes : MonoBehaviour
 
 	}
 
+	public void historyClicked()
+	{
+	
+		SceneManager.LoadScene ("DairyHistory");
+	
+	}
+
 	public void onButtonClicked ()
 	{
 		memoAudioSource.Play ();

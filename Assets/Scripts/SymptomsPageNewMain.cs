@@ -423,11 +423,15 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	{
 		createMainSymptoms();
 		buildJSONFile ();
+
+
 		FindObjectOfType<PdfExporter> ().CreatePDF (finalSymptoms);
 		saveProgressBar.SetActive (false);
 		loadDone.gameObject.SetActive (true);
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Main save clicked",new Dictionary<string, object>());
 	}
+
+
 
 	void OnDestroy() {
 
