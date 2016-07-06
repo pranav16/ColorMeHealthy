@@ -22,11 +22,12 @@ public class SymptomsHistory : MonoBehaviour {
 	public GameObject CLayerListOfDates;
 	public List<UILocalSymptomNode>symptomsNode;
 	public List<Text> generalSymptomsText;
-
+	public List<Button> listOfDates;
 
 	private Dictionary<string,List<BodyPartsTable>> SymptomsMap;
 	void Start () {
 		SymptomsMap = new Dictionary<string, List<BodyPartsTable>> ();
+		listOfDates = new List<Button> ();
 		initialize ();
 	}
 	
@@ -180,6 +181,10 @@ public class SymptomsHistory : MonoBehaviour {
 
 	void populateListOfDates(string month,string year)
 	{
+
+		foreach (Button btn in listOfDates)
+			GameObject.Destroy (btn.gameObject);
+		listOfDates.Clear ();
 		List<string> dateEntries = new List<string> ();
 		foreach (string keys in SymptomsMap.Keys) {
 			string[] dateSplit	= keys.Split ('_');
@@ -200,7 +205,7 @@ public class SymptomsHistory : MonoBehaviour {
 			dateB.gameObject.SetActive (true);
 			dateB.gameObject.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (dateSelectorReference.gameObject.GetComponent<RectTransform>().anchoredPosition.x,postionY);
 			postionY -= dateSelectorReference.gameObject.GetComponent<RectTransform>().rect.height;
-
+			listOfDates.Add (dateB);
 		}
 			
 	}

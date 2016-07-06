@@ -109,5 +109,8 @@ public class TabsHandler : MonoBehaviour
 		Camera.main.GetComponent<AudioSource> ().Play ();
 		SceneManager.LoadScene ("MainSelectionScreen");
 	}
-
+	public void TitleScreenClicked()
+	{
+		SceneManager.LoadScene("TitleScreen");
+	}
 }
