@@ -74,6 +74,7 @@ public class HandleNotes : MonoBehaviour
 
 	}
 
+
 	public void historyClicked()
 	{
 	
