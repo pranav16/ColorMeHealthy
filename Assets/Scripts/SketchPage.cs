@@ -176,27 +176,61 @@ public class SketchPage : MonoBehaviour {
 	}
 
 
-	public void takeScreenShot(string filePath)
-	{
 
-		RenderTexture shot = new RenderTexture(Screen.width,Screen.height,24);
-		RenderTexture currentShot = Camera.main.targetTexture;
-		Camera.main.targetTexture = shot;
-		Camera.main.Render();
-		RenderTexture.active = shot;
-		Texture2D tex = new Texture2D(Screen.width/2,Screen.height , TextureFormat.RGB24, false);
-		tex.ReadPixels(new Rect(0 ,0 ,Screen.width/2, Screen.height ),0,0);
-		tex.Apply();
-		Camera.main.targetTexture = currentShot;
-		System.IO.File.WriteAllBytes(filePath,tex.EncodeToPNG());
-		int currentArtNumber = PlayerPrefs.GetInt("paintingNumber",0);
-		PlayerPrefs.SetInt ("paintingNumber", currentArtNumber + 1);
-		PlayerPrefs.SetString(currentArtNumber -1 +".png",nameOfArt.text);
-		PlayerPrefs.Save ();
+    public void takeScreenShot(string filePath)
+    {
+        //filePath = Application.dataPath + "/picture1.jpg";
+        RenderTexture shot = new RenderTexture(Screen.width, Screen.height, 24);
+        RenderTexture currentShot = Camera.main.targetTexture;
+        Camera.main.targetTexture = shot;
+        Camera.main.Render();
+        RenderTexture.active = shot;
+        Texture2D tex = new Texture2D(Screen.width / 2, Screen.height, TextureFormat.RGB24, false);
+        tex.ReadPixels(new Rect(0, 0, Screen.width / 2, Screen.height), 0, 0);
+        int width = 400;
+        int height = 400;
+        Rect texR = new Rect(0, 0, width, height);
+        _gpu_scale(tex, width, height, FilterMode.Trilinear);
+
+        // Update new texture
+        tex.Resize(width, height);
+        tex.ReadPixels(texR, 0, 0, true);
+        tex.Apply(true);
+        //Texture2D tex = new Texture2D(Screen.width,Screen.height , TextureFormat.RGB24, false);
+        //tex.ReadPixels(new Rect(0,0 ,Screen.width,Screen.height),0,0);
+        tex.Apply();
+
+        Camera.main.targetTexture = currentShot;
+        System.IO.File.WriteAllBytes(filePath, tex.EncodeToPNG());
+        int currentArtNumber = PlayerPrefs.GetInt("paintingNumber", 0);
+        PlayerPrefs.SetInt("paintingNumber", currentArtNumber + 1);
+        PlayerPrefs.SetString(currentArtNumber - 1 + ".png", nameOfArt.text);
+        PlayerPrefs.Save();
 
 
-	}
-	public void earserClicked()
+
+    }
+    static void _gpu_scale(Texture2D src, int width, int height, FilterMode fmode)
+    {
+        //We need the source texture in VRAM because we render with it
+        src.filterMode = fmode;
+        src.Apply(true);
+
+        //Using RTT for best quality and performance. Thanks, Unity 5
+        RenderTexture rtt = new RenderTexture(width, height, 32);
+
+        //Set the RTT in order to render to it
+        Graphics.SetRenderTarget(rtt);
+
+        //Setup 2D matrix in range 0..1, so nobody needs to care about sized
+        GL.LoadPixelMatrix(0, 1, 1, 0);
+
+        //Then clear & draw the texture to fill the entire RTT.
+        GL.Clear(true, true, new Color(0, 0, 0, 0));
+        Graphics.DrawTexture(new Rect(0, 0, 1, 1), src);
+    }
+
+    public void earserClicked()
 	{
 		currentState = States.earserOn;
 		colourPallet [1].GetComponent<AudioSource> ().Play ();
