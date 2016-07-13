@@ -82,6 +82,7 @@
      <Compile Include="Assets\Scripts\TitleScreen.cs" />
      <Compile Include="Assets\Scripts\TouchEffects.cs" />
      <Compile Include="Assets\Scripts\TouchHandler.cs" />
+     <Compile Include="Assets\Scripts\TranslateToFHIR.cs" />
      <Compile Include="Assets\Scripts\TranslatorSnoMed.cs" />
      <Compile Include="Assets\Scripts\VectorTemplates.cs" />
      <None Include="Assets\plugins\sharpPDF Plugins\sharpPDF.xml" />

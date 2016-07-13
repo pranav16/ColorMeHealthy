@@ -22,6 +22,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 	// Use this for initialization
 	enum states {Ready,LoadFile,Updatevalues,Done};
 	states state;
+	TranslateToFHIR translatorFHIR;
 	void Start () {
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Local Page", new Dictionary<string, object>
 			{
@@ -41,6 +42,8 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 		else if (state == states.Updatevalues)
 			updateUi ();
 		selectedSymptom.setPartName (bodyPartSelectedText.text);
+		translatorFHIR = new TranslateToFHIR ();
+		translatorFHIR.init ();
 
 	}
 	
@@ -227,7 +230,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			analytics ["botherscale"] = " " +selectedSymptoms[key].botherScale;
 			}
 		}
-
+		translatorFHIR.convertToFHIR (selectedSymptom);
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent ("Symptoms Local Body part", analytics);
 		SymptomsPageNewMain.finalSymptoms [bodyPartSelectedText.text] = selectedSymptom;
 		symptomNodes [0].GetComponent<AudioSource> ().Play ();

@@ -49,7 +49,7 @@ public class HandleNotes : MonoBehaviour
 			return;
 		AnalyticsSystem system = FindObjectOfType<AnalyticsSystem> ();
 		if (system)
-			system.CustomEvent ("Write_Dairy", new Dictionary<string, object> ());
+			system.CustomEvent ("Write_Dairy", new Dictionary<string,object> ());
 		memoText = memoBox.text;
 		Debug.Log ("text typed: " + memoText);
 	
@@ -101,7 +101,7 @@ public class HandleNotes : MonoBehaviour
 			}
 		}
 		memoBox.text = "";
-		// SceneManager.LoadScene("MainSelectionScreen");
+
 	}
 
 
