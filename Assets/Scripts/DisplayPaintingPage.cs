@@ -89,9 +89,9 @@ public class DisplayPaintingPage : MonoBehaviour {
 	{
 		if(!System.IO.File.Exists(path)) return;
 		byte [] textureData = System.IO.File.ReadAllBytes (path);
-		Texture2D tex = new Texture2D(Screen.width/2,Screen.height);
+        Texture2D tex = new Texture2D(400, 400);// Screen.height);
 		tex.LoadImage (textureData);
-		Sprite sprite = Sprite.Create (tex,new Rect(0,0,Screen.width/2,Screen.height),new Vector2(0.5f,0.5f));
+		Sprite sprite = Sprite.Create (tex,new Rect(0,0,400,400),new Vector2(0.5f,0.5f));
 		painingImg[index].sprite = sprite;
 	}
 
