@@ -40,9 +40,11 @@ public class SymptomsHistory : MonoBehaviour {
 	{
 		LoadSymptomsJson();
 		populateDateDropDowns();
-		populateListOfDates("07","2016");
+        string currentMonth = System.DateTime.Now.Month.ToString("00");
+        string currentYear = System.DateTime.Now.Year.ToString("0000");
+        populateListOfDates(currentMonth, currentYear);
 
-		return true;
+        return true;
 	}
 
 	bool populateDateDropDowns()

@@ -19,7 +19,10 @@ public class DairyHistoryPage : MonoBehaviour {
 		listOfDates = new List<Button> ();	
 		readDairyJson ();
 		populateDateDropDowns ();
-	}
+        string currentMonth = System.DateTime.Now.Month.ToString("00");
+        string currentYear = System.DateTime.Now.Year.ToString("0000");
+        populateListOfDates(currentMonth,currentYear);
+    }
 	
 	// Update is called once per frame
 	void Update () {

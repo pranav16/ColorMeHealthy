@@ -51,7 +51,7 @@ public class DisplayPaintingPage : MonoBehaviour {
 		currentImageIndex--;
 		if (0 >= currentImageIndex) {
 			currentImageIndex = 0;
-			return;
+			//return;
 		}
 		string filePath = Application.persistentDataPath  +"/Paintings" + currentImageIndex + ".png";
 		imageName[0].text = PlayerPrefs.GetString (currentImageIndex -1 + ".png", "");

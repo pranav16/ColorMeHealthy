@@ -84,7 +84,7 @@ public class HandleNotes : MonoBehaviour
 
 	public void onButtonClicked ()
 	{
-		memoAudioSource.Play ();
+		//smemoAudioSource.Play ();
 		//Camera.main.GetComponent<AudioSource> ().Play();
 		Debug.Log ("on button clicked");
 		string fileName = Application.persistentDataPath + "/Color" + "Dairy.json";
