@@ -1,0 +1,9 @@
+lastUpgrade=00934
+proj.pluginVersion=0.9.34
+ios.ClientId=652257223664-jp191hr3lcglan4gsecn7dtbs0bugqdm.apps.googleusercontent.com
+ios.BundleId=com.utah.gaplab
+proj.ConstantsClassName=GooglePlayConstants
+ios.ResourceData=%23define+CLIENT_ID+%40%22652257223664-jp191hr3lcglan4gsecn7dtbs0bugqdm.apps.googleusercontent.com%22%0a%23define+BUNDLE_ID+%40%22com.utah.gaplab%22%0a%23define+LEAD_COLOR_ME_HEALTHY+%40%22CgkI8Me97P0SEAIQAQ%22%0a
+and.ClientId=652257223664-jp191hr3lcglan4gsecn7dtbs0bugqdm.apps.googleusercontent.com
+proj.requireGPlus=false
+ios.SetupDone=true

@@ -96,6 +96,11 @@
      <Compile Include="Assets\plugins\sharpPDF Plugins\rectangleElement.cs" />
      <Compile Include="Assets\plugins\sharpPDF Plugins\textAdapter.cs" />
      <Compile Include="Assets\plugins\sharpPDF Plugins\textElement.cs" />
+     <None Include="Assets\GooglePlayGames\Editor\Podfile.txt" />
+     <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
+     <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
+     <None Include="Assets\plugins\Android\MainLibProj\AndroidManifest.xml" />
+     <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
      <None Include="Assets\plugins\sharpPDF Plugins\sharpPDF.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
