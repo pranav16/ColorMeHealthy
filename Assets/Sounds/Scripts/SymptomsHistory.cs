@@ -147,37 +147,53 @@ public class SymptomsHistory : MonoBehaviour {
 				indexForText++;
 				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("Bothersome_", "");
 				indexForText++;
-			}
-			else if (GeneralSymptom.name.Contains ("FeelingToday_")) {
+			} else if (GeneralSymptom.name.Contains ("FeelingToday_")) {
 				generalSymptomsText [indexForText].text = "How are you feeling today? ";
 				indexForText++;
 				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("FeelingToday_", "");
 				indexForText++;
-			}
-			else if (GeneralSymptom.name.Contains ("Bestthing_")) {
+			} else if (GeneralSymptom.name.Contains ("Bestthing_")) {
 				generalSymptomsText [indexForText].text = "What is the best thing about today? ";
 				indexForText++;
 				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("Bestthing_", "");
 				indexForText++;
-			}
-			else if (GeneralSymptom.botherScale >= 0) {
+			} else if (GeneralSymptom.botherScale >= 0) {
 				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "?  Yes");
 				indexForText++;
 				generalSymptomsText [indexForText].text = "Pain: " + GeneralSymptom.painScale.ToString ("0.0") + " Bother: " + GeneralSymptom.botherScale.ToString ("0.0");
 				indexForText++;
+			 } 
+			else if(GeneralSymptom.botherScale == -1.0f && GeneralSymptom.painScale == -1.0f && GeneralSymptom.name.Contains("school"))
+			{
+				generalSymptomsText [indexForText].text = GeneralSymptom.name;
+				indexForText++;
+				generalSymptomsText [indexForText].text = "No";
+				indexForText++;
+			}
+			else if (GeneralSymptom.botherScale == -1.0f && GeneralSymptom.painScale == -1.0f) {
+				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "?  Yes");
+				indexForText++;
+				generalSymptomsText [indexForText].text = "Pain: " + 0.0f + " Bother: " + 0.0f;
+				indexForText++;
 			}
 			else if(GeneralSymptom.name.Contains ("?") && GeneralSymptom.botherScale == -1.0f)
 			{
-				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "?  Yes");
+				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "");
 				indexForText++;
-				if (GeneralSymptom.name.Contains ("thrown")) {
-					generalSymptomsText [indexForText].text = "How many times ?: " + GeneralSymptom.painScale.ToString("0.0");
+				generalSymptomsText [indexForText].text = "Yes";
+				indexForText++;
+				if (GeneralSymptom.name.Contains ("throw")) {
+					generalSymptomsText [indexForText].text = "How many times ?" ;
+					indexForText++;
+					generalSymptomsText [indexForText].text =  GeneralSymptom.painScale.ToString("0.0");
 					indexForText++;
 				}
 			}
 
 		
 		}
+		for (int i = indexForText; i < generalSymptomsText.Count; i++)
+			generalSymptomsText [i].text = "";
 
 	}
 

@@ -63,7 +63,8 @@ public class TitleScreen : MonoBehaviour {
 			if(success)
 			{
 				Debug.Log(Social.localUser.id);
-				debugText.text = Social.localUser.userName + " has id : " + Social.localUser.id;
+				debugText.text = Social.localUser.id;
+
 			}
 			else
 			{

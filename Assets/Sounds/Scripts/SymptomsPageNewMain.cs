@@ -376,41 +376,60 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			else if (j > 1)
 				j -= 1;
 			if (toggles [i].isOn) {
-				symptoms symptom = new symptoms();
+				symptoms symptom = new symptoms ();
 				symptom.name = toggles [i].GetComponentInChildren<Text> ().text;
 				symptom.botherScale = botherSome [j].value;
 				symptom.painScale = howMuch [j].value;
 				table.addSymptoms (symptom);
+			} else {
+				symptoms symptom = new symptoms ();
+				symptom.name = toggles [i].GetComponentInChildren<Text> ().text;
+				symptom.botherScale = -1;
+				symptom.painScale = -1;
+				table.addSymptoms (symptom);
+			
+			
 			}
 		}
 		if (toggles [7].isOn) {
-			symptoms symptom = new symptoms();
-			symptom.name =  questions[3].text;
+			symptoms symptom = new symptoms ();
+			symptom.name = questions [3].text;
 			symptom.botherScale = -1.0f;
 			table.addSymptoms (symptom);
-		}
-		if (otherSymptoms.text != "") {
-			symptoms symptom = new symptoms();
-			symptom.name = "os_"+ otherSymptoms.text;
+		} else {
+			symptoms symptom = new symptoms ();
+			symptom.name = questions [3].text;
+			symptom.botherScale = -1.0f;
+			symptom.painScale = -1.0f;
 			table.addSymptoms (symptom);
 		}
-		if (WhatsBothering.text != "") {
-			symptoms symptom = new symptoms();
-			symptom.name = "Bothersome_" + WhatsBothering.text;
-			table.addSymptoms (symptom);
-		}
-		if (FeelingToday.text != "") {
-			symptoms symptom = new symptoms();
-			//dirty way to make whats bothering you the most symptoms fit into our bodyparts table model
-			symptom.name = "FeelingToday_" + FeelingToday.text;
-			table.addSymptoms (symptom);
-		}
-		if (bestThingToday.text != "") {
-			symptoms symptom = new symptoms();
-			symptom.name = "Bestthing_" + FeelingToday.text;
-			table.addSymptoms (symptom);
+		if(otherSymptoms.text == "")
+			otherSymptoms.text = "None";
+			symptoms symptom1 = new symptoms();
+			symptom1.name = "os_"+ otherSymptoms.text;
+			table.addSymptoms (symptom1);
+		
+		if(WhatsBothering.text == "")
+			WhatsBothering.text = "None";
+			symptoms symptom2 = new symptoms();
+			symptom2.name = "Bothersome_" + WhatsBothering.text;
+			table.addSymptoms (symptom2);
 
-		}
+		if(FeelingToday.text == "")
+			FeelingToday.text = "None";
+			symptoms symptom3 = new symptoms();
+			//dirty way to make whats bothering you the most symptoms fit into our bodyparts table model
+			symptom3.name = "FeelingToday_" + FeelingToday.text;
+			table.addSymptoms (symptom3);
+		
+
+		if(bestThingToday.text == "")
+			bestThingToday.text = "None";
+			symptoms symptom4 = new symptoms();
+			symptom4.name = "Bestthing_" + bestThingToday.text;
+			table.addSymptoms (symptom4);
+
+		
 		finalSymptoms ["General Symptoms"] = table;
 	}
 	public void savedClicked()
