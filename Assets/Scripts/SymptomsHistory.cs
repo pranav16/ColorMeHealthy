@@ -20,6 +20,8 @@ public class SymptomsHistory : MonoBehaviour {
 	public Dropdown yearSelector;
 	public Button dateSelectorReference;
 	public GameObject CLayerListOfDates;
+	public GameObject CLayerSymptoms;
+	public GameObject GeneralSymptomNode;
 	public List<UILocalSymptomNode>symptomsNode;
 	public List<Text> generalSymptomsText;
 	public List<Button> listOfDates;
@@ -43,7 +45,6 @@ public class SymptomsHistory : MonoBehaviour {
         string currentMonth = System.DateTime.Now.Month.ToString("00");
         string currentYear = System.DateTime.Now.Year.ToString("0000");
         populateListOfDates(currentMonth, currentYear);
-
         return true;
 	}
 
@@ -94,6 +95,10 @@ public class SymptomsHistory : MonoBehaviour {
 	}
 	void populateSymptoms(string id)
 	{
+		for (int k = 0; k < symptomsNode.Count; k++) {
+			symptomsNode [k].parent.gameObject.SetActive (false);
+		}
+
 		if (SymptomsMap.ContainsKey (id)) {
 			List<BodyPartsTable> tables = SymptomsMap [id];
 			for (int i = 0 ;i< tables.Count ;i ++) {
@@ -119,14 +124,32 @@ public class SymptomsHistory : MonoBehaviour {
 				}
 
 			}
-
-			for (int k = tables.Count - 1; k < symptomsNode.Count; k++) {
-				symptomsNode [k].parent.gameObject.SetActive (false);
-			}
-
-
-
 		}
+
+		resizeTheScrollView ();
+	}
+
+
+	void resizeTheScrollView()
+	{
+		int count = 0;
+		foreach (UILocalSymptomNode node in symptomsNode)
+			if (node.parent.gameObject.activeInHierarchy)
+				count++;
+
+		float sizeOfScroll = count * symptomsNode [0].parent.gameObject.GetComponent<RectTransform> ().rect.height + GeneralSymptomNode.GetComponent<RectTransform>().rect.height;
+		CLayerSymptoms.GetComponent<RectTransform> ().sizeDelta = new Vector2(0,sizeOfScroll);
+		float positionY = sizeOfScroll / 2 - GeneralSymptomNode.GetComponent<RectTransform>().rect.height /2;
+		GeneralSymptomNode.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, positionY);
+		positionY -= (GeneralSymptomNode.GetComponent<RectTransform> ().rect.height/2 + symptomsNode [0].parent.gameObject.GetComponent<RectTransform> ().rect.height/2);
+
+		for (int i = 0; i < count; i++) {
+
+			symptomsNode [i].parent.gameObject.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, positionY);
+			positionY -= symptomsNode [i].parent.gameObject.GetComponent<RectTransform> ().rect.height;
+		
+		}
+			
 
 	}
 		

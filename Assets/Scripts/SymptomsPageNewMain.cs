@@ -235,14 +235,14 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	{		
 		mainSymptoms.setPartName ("General Symptoms");
 	
-		for (int i = 0;i < 7;i++)
+		for (int i = 0;i < 8;i++)
 		{
 			int j = i;
 			if (toggles [i].isOn) {
 				symptoms symptom = new symptoms();
 				symptom.name = toggles [i].GetComponentInChildren<Text> ().text;
-				if (j == 1) {
-					symptom.painScale = howManyTimes.value;
+				if (j == 3) {
+					symptom.painScale = howManyTimes.value + 1;
 					symptom.botherScale = -1.0f;
 					mainSymptoms.addSymptoms (symptom);
 					continue;
@@ -256,7 +256,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 				mainSymptoms.addSymptoms (symptom);
 			}
 		}
-		if (toggles [7].isOn) {
+		if (toggles [8].isOn) {
 			symptoms symptom = new symptoms();
 			symptom.name =  questions[3].text;
 			symptom.botherScale = -1.0f;
@@ -303,7 +303,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 				if (toggles [i].GetComponentInChildren<Text> ().text == mainSymptoms.getSymptoms()[j].name) 
 				{
 					int k = i;
-					if (k == 1) {
+					if (k == 3) {
 						toggles [i].isOn = true;
 						howManyTimes.value = (int)mainSymptoms.getSymptoms () [j].painScale;
 						continue;
@@ -360,15 +360,15 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	{
 		BodyPartsTable table = new BodyPartsTable ();
 		table.setPartName ("General Symptoms");
-		for (int i = 0;i < 7;i++)
+		for (int i = 0;i < 8;i++)
 		{
 			int j = i;
-			if (j == 1) {
+			if (j == 3) {
 				if (!toggles [i].isOn)
 					continue;
 				symptoms symptom = new symptoms();
 				symptom.name = toggles [i].GetComponentInChildren<Text> ().text;
-				symptom.painScale = howManyTimes.value;
+				symptom.painScale = howManyTimes.value + 1;
 				symptom.botherScale = -1;
 				table.addSymptoms (symptom);
 				continue;
@@ -391,7 +391,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			
 			}
 		}
-		if (toggles [7].isOn) {
+		if (toggles [8].isOn) {
 			symptoms symptom = new symptoms ();
 			symptom.name = questions [3].text;
 			symptom.botherScale = -1.0f;
