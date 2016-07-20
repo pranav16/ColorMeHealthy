@@ -43,6 +43,7 @@ public class SketchPage : MonoBehaviour {
 		colorSelected = color;
 		originalBrushSize = touchSprite.transform.localScale;
 		fillShadeChart ();
+		scaleSliderValueChanged ();
 	}
 
 

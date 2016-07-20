@@ -6,11 +6,11 @@ using UnityEngine.Analytics;
 public class AnalyticsSystem : MonoBehaviour
 {
 
-	private AnalyticsSystem instance;
+	private static AnalyticsSystem instance = null;
 	private Dictionary<string,int> Counters;
 	private string startTimeStamp;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
 		if (instance == null) {
 			instance = this;

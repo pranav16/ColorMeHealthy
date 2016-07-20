@@ -4,10 +4,10 @@ using System.Collections;
 public class TouchEffects : MonoBehaviour
 {
 
-	TouchEffects instance;
+	static TouchEffects instance = null;
 
 	// Use this for initialization
-	void Start ()
+	void Awake()
 	{
 		if (instance == null) {
 			instance = this;
@@ -16,7 +16,11 @@ public class TouchEffects : MonoBehaviour
 
 		DontDestroyOnLoad (gameObject);
 	}
-	
+
+	void Start () {
+
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{
