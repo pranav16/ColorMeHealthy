@@ -147,18 +147,19 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			Debug.Log("centre of points: " + meanPosition);
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(meanPosition));
-			deleteLine ();
-			List<Vector3>smoothPoints =  MakeSmoothCurve (touchLocations, 10.0f);
-			if (smoothPoints == null)
-				return;
-			for (int i = 0; i < smoothPoints.Count; i++) {
-				GameObject lineDrawn = Instantiate (touchSprite, smoothPoints[i], Quaternion.identity) as GameObject;
-				lineGameObjects.Add (lineDrawn);
-			}
+	
 			if (Physics.Raycast(ray, out hit))
 			{
-				Debug.Log(hit.collider.name);
-				Debug.Log(hit.collider.transform.position);
+				//Debug.Log(hit.collider.name);
+				//Debug.Log(hit.collider.transform.position);
+
+				if (!ValidateBodyPart (hit.collider.name)) {
+					deleteLine ();
+					touchLocations.Clear();
+					currentState = States.ready;
+					return;
+				}
+
 				bodyPartSelected = hit.collider.name;
 				SymptomsPageNewLocal.bodyPartSelected = bodyPartSelected;
 				FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Main Page body part selected", new Dictionary<string, object>
@@ -174,6 +175,40 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			currentState = States.ready;
 
 		}
+	}
+
+	bool ValidateBodyPart(string bodypart)
+	{
+		switch (bodypart) {
+		case "Head":
+			return true;
+		case "Chest":
+			return true;
+		case "RightHand":
+			return true;
+		case "LeftHand":
+			return true;
+		case "RightLeg":
+			return true;
+		case "LeftLeg":
+			return true;
+		case "Stomach":
+			return true;
+		case "Abdomen":
+			return true;
+		case "RightToe":
+			return true;
+		case "LeftToe":
+			return true;
+		case "RightPalms":
+			return true;
+		case "LeftPalms":
+			return true;
+		case "Mouth":
+			return true;
+		}
+
+		return false;
 	}
 	public void invokeDeletion()
 	{
@@ -444,7 +479,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		buildJSONFile ();
 
 
-		FindObjectOfType<PdfExporter> ().CreatePDF (finalSymptoms);
+		//FindObjectOfType<PdfExporter> ().CreatePDF (finalSymptoms);
 		saveProgressBar.SetActive (false);
 		loadDone.gameObject.SetActive (true);
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Symptoms Main save clicked",new Dictionary<string, object>());
