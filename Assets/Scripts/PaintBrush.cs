@@ -158,23 +158,8 @@ public class PaintBrush : MonoBehaviour {
         }
         else if (currentState == States.touchend)
         {
-			//deleteLine (blurryLineObjects);
-			List<Vector3> smoothPoints;
-			if (isSmoothLineOn) {
-			 
-				 smoothPoints = MakeSmoothCurve (touchLocations, 10.0f);
-				//StartCoroutine("MakeSmoothCurve");
 
-
-
-			} else {
-				smoothPoints = touchLocations;	
-			}
-			for (int i = 0; i < smoothPoints.Count; i++) {
-				//GameObject lineDrawn = Instantiate (touchSprite,smoothPoints[i], Quaternion.identity) as GameObject;
-				//lineGameObjects.Add (lineDrawn);
-
-			}
+		
 			touchLocations.Clear ();	
             currentState = States.ready;
 		

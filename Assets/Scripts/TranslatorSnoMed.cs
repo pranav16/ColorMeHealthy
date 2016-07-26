@@ -8,18 +8,18 @@ public struct SnoMedData
 	public long id;
 }
 
-public class TranslatorSnoMed : MonoBehaviour {
+public class TranslatorSnoMed{
 
 
 
 	Dictionary<string,SnoMedData>UiToSnoMedTerm;
-	private string filePath;
+	private TextAsset Json;
 
 
 	public bool Init()
 	{
 		UiToSnoMedTerm = new Dictionary<string, SnoMedData> ();
-		filePath = Application.dataPath + "/SnoMedData.json";
+		Json = Resources.Load ("SnoMedData") as TextAsset;
 		loadTable ();
 		return true;
 	}
@@ -27,9 +27,7 @@ public class TranslatorSnoMed : MonoBehaviour {
 
 	private void loadTable()
 	{
-		if (!System.IO.File.Exists (filePath))
-			return;
-		string fileData = System.IO.File.ReadAllText (filePath);
+		string fileData = Json.text;
 		JSONObject MainObject = new JSONObject(fileData);
 		JSONObject dataField = MainObject.GetField ("Data");
 		foreach (JSONObject SnoMedDataJson in dataField.list) {

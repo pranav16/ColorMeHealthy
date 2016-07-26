@@ -48,7 +48,8 @@ public class ObjectChanger : MonoBehaviour {
 	void Update () {
 		if (currentCount >= objects.Count) {
 			currentCount = 0;
-
+			if (isLinear)
+				currentCount = objects.Count - 1; 
 		}
 
 		if (Input.GetMouseButtonDown(0)) {

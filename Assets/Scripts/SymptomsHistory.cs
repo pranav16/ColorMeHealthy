@@ -121,8 +121,8 @@ public class SymptomsHistory : MonoBehaviour {
 
 				for (int j = 0; j < table.getSymptoms ().Count; j++) {
 
-					symptomsNode [i].BotherSymptom [j].text = table.getSymptoms () [j].botherScale.ToString ("0.0");
-					symptomsNode [i].painSymptom [j].text = table.getSymptoms () [j].painScale.ToString ("0.0");
+					symptomsNode [i].BotherSymptom [j].text = symptomPointsToText ((int)table.getSymptoms () [j].botherScale);
+					symptomsNode [i].painSymptom [j].text = symptomPointsToText ((int)table.getSymptoms () [j].painScale);
 					symptomsNode [i].symptomName [j].text = table.getSymptoms () [j].name;
 
 				}
@@ -192,7 +192,7 @@ public class SymptomsHistory : MonoBehaviour {
 			} else if (GeneralSymptom.botherScale >= 0) {
 				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "?  Yes");
 				indexForText++;
-				generalSymptomsText [indexForText].text = "Severity: " + GeneralSymptom.painScale.ToString ("0.0") + " Bother: " + GeneralSymptom.botherScale.ToString ("0.0");
+				generalSymptomsText [indexForText].text = "Severity: " + symptomPointsToText((int)GeneralSymptom.painScale) + " Bother: " + symptomPointsToText((int)GeneralSymptom.botherScale);
 				indexForText++;
 			 } 
 			else if(GeneralSymptom.botherScale == -1.0f && GeneralSymptom.painScale == -1.0f && GeneralSymptom.name.Contains("school"))
@@ -311,6 +311,17 @@ public class SymptomsHistory : MonoBehaviour {
 			
 	}
 
+	public string symptomPointsToText(int value)
+	{
+		switch (value)
+		{
+		case 1:
+			return "Mild";
+		case 2 : return "Moderate";
+		case 3 :return "Severe";
+		default :return "None" ;
+		}
+	}
 
 
 

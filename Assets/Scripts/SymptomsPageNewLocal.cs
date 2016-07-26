@@ -29,6 +29,8 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 				{ "body part", bodyPartSelected },
 
 			});
+		translatorFHIR = new TranslateToFHIR ();
+		translatorFHIR.init ();
 		selectedSymptom = new BodyPartsTable ();
 		selectedSymptoms = new Dictionary<string, symptoms> ();
 		Debug.Log (bodyPartSelected);
@@ -42,8 +44,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 		else if (state == states.Updatevalues)
 			updateUi ();
 		selectedSymptom.setPartName (bodyPartSelectedText.text);
-		translatorFHIR = new TranslateToFHIR ();
-		translatorFHIR.init ();
+	
 
 	}
 	
@@ -230,6 +231,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			analytics ["botherscale"] = " " +selectedSymptoms[key].botherScale;
 			}
 		}
+		if(translatorFHIR != null)
 		translatorFHIR.convertToFHIR (selectedSymptom);
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent ("Symptoms Local Body part", analytics);
 		SymptomsPageNewMain.finalSymptoms [bodyPartSelectedText.text] = selectedSymptom;

@@ -15,7 +15,8 @@ public class TranslateToFHIR  {
 
 	public void convertToFHIR(BodyPartsTable table)
 	{
-		
+		if (table == null)
+			return;
 		foreach(symptoms s in table.getSymptoms())
 			Debug.Log(LocalJsonToFHIR(table.getPartName(),s));
 	}
@@ -36,6 +37,7 @@ public class TranslateToFHIR  {
 		JSONObject code = new JSONObject ();
 		code.AddField ("system",snowMedLink);
 		//snowmedid
+		if(translator.isKeyPresent(partName))
 		code.AddField ("code", translator.getSnoMedTermForUi(partName).id);
 		//descrption
 		code.AddField ("display",partName);
@@ -54,6 +56,7 @@ public class TranslateToFHIR  {
 		JSONObject codeTuple = new JSONObject ();
 		codeTuple.AddField ("system",snowMedLink);
 		//snomedid like pain etc
+		if(translator.isKeyPresent(symptom.name))
 		codeTuple.AddField ("code",translator.getSnoMedTermForUi(symptom.name).id);
 		//descrption
 		codeTuple.AddField ("display", symptom.name);
