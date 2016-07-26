@@ -278,6 +278,7 @@
     <Compile Include="Assets\Scripts\GenderSelector.cs" />
     <Compile Include="Assets\Scripts\Graph.cs" />
     <Compile Include="Assets\Scripts\HandleNotes.cs" />
+    <Compile Include="Assets\Scripts\HelpScreen.cs" />
     <Compile Include="Assets\Scripts\HistoryPage.cs" />
     <Compile Include="Assets\Scripts\JSONObject.cs" />
     <Compile Include="Assets\Scripts\JSONTemplates.cs" />
