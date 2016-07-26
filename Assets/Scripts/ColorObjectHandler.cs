@@ -109,7 +109,7 @@ public class ColorObjectHandler : MonoBehaviour {
 
 	public void loadAndSetCustomization()
 	{
-		Camera.main.GetComponent<GenderSelector> ().setInitialStates();
+		FindObjectOfType<GenderSelector> ().setInitialStates();
 		string filePath = "CurrentCustomization.json";
 		string fileName = Application.persistentDataPath + "/Color" + filePath;
 		if (!System.IO.File.Exists (fileName))return;

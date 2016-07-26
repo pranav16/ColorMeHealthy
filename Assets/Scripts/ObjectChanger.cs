@@ -12,6 +12,7 @@ public class ObjectChanger : MonoBehaviour {
 	private int dayOfYear;
 	public AudioSource audioEffect;
 	private SpriteRenderer render;
+	public bool isLinear;
 	// Use this for initialization
 	void Start () {
 		
@@ -56,8 +57,10 @@ public class ObjectChanger : MonoBehaviour {
 			if (Physics.Raycast (ray, out hit)) {
 				if (gameObject.name == hit.collider.name && canChange) {
 					currentCount++;
-					if (currentCount >= objects.Count) {
+					if (currentCount >= objects.Count ) {
 						currentCount = 0;
+						if (isLinear)
+							currentCount = objects.Count - 1; 
 
 					}
 					for (int i = 0; i < objects.Count; i++) {

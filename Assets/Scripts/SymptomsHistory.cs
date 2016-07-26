@@ -13,7 +13,7 @@ public class SymptomsHistory : MonoBehaviour {
 		public List<Text> symptomName;
 		public List<Text>painSymptom;
 		public List<Text>BotherSymptom;
-
+		public List<GameObject> symptomCell;
 	};
 
 	public Dropdown monthSelector;
@@ -25,10 +25,12 @@ public class SymptomsHistory : MonoBehaviour {
 	public List<UILocalSymptomNode>symptomsNode;
 	public List<Text> generalSymptomsText;
 	public List<Button> listOfDates;
-
+	public GameObject sendMailProgressBar;
+	public static Dictionary<string,BodyPartsTable>currentSymptoms = new Dictionary<string, BodyPartsTable>();
 	private Dictionary<string,List<BodyPartsTable>> SymptomsMap;
 	void Start () {
 		SymptomsMap = new Dictionary<string, List<BodyPartsTable>> ();
+		currentSymptoms = new Dictionary<string, BodyPartsTable> ();
 		listOfDates = new List<Button> ();
 		initialize ();
 	}
@@ -98,32 +100,39 @@ public class SymptomsHistory : MonoBehaviour {
 		for (int k = 0; k < symptomsNode.Count; k++) {
 			symptomsNode [k].parent.gameObject.SetActive (false);
 		}
-
+		currentSymptoms.Clear ();
 		if (SymptomsMap.ContainsKey (id)) {
 			List<BodyPartsTable> tables = SymptomsMap [id];
-			for (int i = 0 ;i< tables.Count ;i ++) {
+			for (int i = 0; i < tables.Count; i++) {
 				BodyPartsTable table = tables [i];
 				if (table.getPartName ().Contains ("General Symptoms")) {
+					currentSymptoms.Add (table.getPartName (), table);
 					populateGeneralSymptoms (table);
 					continue;
 				}
 				symptomsNode [i].partName.text = table.getPartName ();
+				currentSymptoms.Add (table.getPartName (), table);
 				symptomsNode [i].parent.gameObject.SetActive (true);
-				byte [] textureData = System.IO.File.ReadAllBytes (table.getImagePath());
-				Texture2D tex = new Texture2D(400,400);
+				byte[] textureData = System.IO.File.ReadAllBytes (table.getImagePath ());
+				Texture2D tex = new Texture2D (400, 400);
 				tex.LoadImage (textureData);
-				Sprite sprite = Sprite.Create (tex,new Rect(0,0,400,400),new Vector2(0.5f,0.5f));
+				Sprite sprite = Sprite.Create (tex, new Rect (0, 0, 400, 400), new Vector2 (0.5f, 0.5f));
 				symptomsNode [i].symptomImage.sprite = sprite;
 
 				for (int j = 0; j < table.getSymptoms ().Count; j++) {
 
-					symptomsNode [i].BotherSymptom [j].text = table.getSymptoms()[j].botherScale.ToString("0.0");
-					symptomsNode [i].painSymptom [j].text = table.getSymptoms()[j].painScale.ToString("0.0");
+					symptomsNode [i].BotherSymptom [j].text = table.getSymptoms () [j].botherScale.ToString ("0.0");
+					symptomsNode [i].painSymptom [j].text = table.getSymptoms () [j].painScale.ToString ("0.0");
 					symptomsNode [i].symptomName [j].text = table.getSymptoms () [j].name;
 
 				}
 
+				for (int j = table.getSymptoms ().Count; j < symptomsNode [i].symptomCell.Count; j++)
+					symptomsNode [i].symptomCell [j].SetActive (false);
+				
 			}
+
+			
 		}
 
 		resizeTheScrollView ();
@@ -183,7 +192,7 @@ public class SymptomsHistory : MonoBehaviour {
 			} else if (GeneralSymptom.botherScale >= 0) {
 				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "?  Yes");
 				indexForText++;
-				generalSymptomsText [indexForText].text = "Pain: " + GeneralSymptom.painScale.ToString ("0.0") + " Bother: " + GeneralSymptom.botherScale.ToString ("0.0");
+				generalSymptomsText [indexForText].text = "Severity: " + GeneralSymptom.painScale.ToString ("0.0") + " Bother: " + GeneralSymptom.botherScale.ToString ("0.0");
 				indexForText++;
 			 } 
 			else if(GeneralSymptom.botherScale == -1.0f && GeneralSymptom.painScale == -1.0f && GeneralSymptom.name.Contains("school"))
@@ -196,7 +205,7 @@ public class SymptomsHistory : MonoBehaviour {
 			else if (GeneralSymptom.botherScale == -1.0f && GeneralSymptom.painScale == -1.0f) {
 				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("?", "?  Yes");
 				indexForText++;
-				generalSymptomsText [indexForText].text = "Pain: " + 0.0f + " Bother: " + 0.0f;
+				generalSymptomsText [indexForText].text = "Severity: " + 0.0f + " Bother: " + 0.0f;
 				indexForText++;
 			}
 			else if(GeneralSymptom.name.Contains ("?") && GeneralSymptom.botherScale == -1.0f)
@@ -249,6 +258,14 @@ public class SymptomsHistory : MonoBehaviour {
 			listOfDates.Add (dateB);
 		}
 			
+	}
+
+
+	public void createPDFReport()
+	{
+		sendMailProgressBar.SetActive (true);
+		FindObjectOfType<PdfExporter> ().CreatePDF (currentSymptoms);
+		sendMailProgressBar.SetActive (false);
 	}
 		
 	void LoadSymptomsJson()
