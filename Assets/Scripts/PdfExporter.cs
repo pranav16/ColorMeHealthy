@@ -16,6 +16,7 @@ public class PdfExporter : MonoBehaviour {
 	string		attacName;
 	PdfExporter instance;
 	TranslatorSnoMed translateToSnowMed;
+	private string emailID;
 	// Use this for initialization
 	void Start () {
 		if (instance == null) {
@@ -26,6 +27,13 @@ public class PdfExporter : MonoBehaviour {
 
 		DontDestroyOnLoad (gameObject);
 	}
+
+	public void setEmailAddress(string emailID)
+	{
+		this.emailID = emailID;
+	}
+
+
 
 	public void init()
 	{
@@ -156,12 +164,12 @@ public class PdfExporter : MonoBehaviour {
 		
 	public void mail()
 	{
-
+		try{
 		MailMessage mail = new MailMessage();
-
 		mail.From = new MailAddress("thecolormehealthyapp@gmail.com");
 		//mail.To.Add("mitchell.eastwold@hotmail.com");
 		mail.To.Add("thecolormehealthyapp@gmail.com");
+		mail.To.Add (emailID);
 		mail.Subject = "Color Me Healthy -- Report";
 		mail.Body = "Attached your patient's report";
 		mail.Attachments.Add(new Attachment(attacName));
@@ -173,7 +181,11 @@ public class PdfExporter : MonoBehaviour {
 			delegate(object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) 
 		{ return true; };
 		smtpServer.Send(mail);
-		Debug.Log("success");
+		}
+		catch(Exception ex) {
+			Debug.Log(ex.Message);
+		}
+	
 	}
 
 

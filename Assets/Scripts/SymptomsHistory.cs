@@ -26,6 +26,9 @@ public class SymptomsHistory : MonoBehaviour {
 	public List<Text> generalSymptomsText;
 	public List<Button> listOfDates;
 	public GameObject sendMailProgressBar;
+	public InputField emailId;
+	private string email;
+	public GameObject SentImage;
 	public static Dictionary<string,BodyPartsTable>currentSymptoms = new Dictionary<string, BodyPartsTable>();
 	private Dictionary<string,List<BodyPartsTable>> SymptomsMap;
 	void Start () {
@@ -37,6 +40,9 @@ public class SymptomsHistory : MonoBehaviour {
 	
 
 	void Update () {
+
+		if(Input.GetMouseButtonDown(0))
+			SentImage.SetActive (false);
 	
 	}
 
@@ -47,6 +53,9 @@ public class SymptomsHistory : MonoBehaviour {
         string currentMonth = System.DateTime.Now.Month.ToString("00");
         string currentYear = System.DateTime.Now.Year.ToString("0000");
         populateListOfDates(currentMonth, currentYear);
+		email = PlayerPrefs.GetString ("Email","");
+		emailId.text = email;
+		FindObjectOfType<PdfExporter> ().setEmailAddress (email);
         return true;
 	}
 
@@ -74,6 +83,14 @@ public class SymptomsHistory : MonoBehaviour {
 		monthSelector.AddOptions (months);
 		yearSelector.AddOptions (years);
 		return true;
+	}
+
+	public void onEmailChange(string email)
+	{
+		email = emailId.text;
+		FindObjectOfType<PdfExporter> ().setEmailAddress (email);
+		PlayerPrefs.SetString ("Email",email);
+		PlayerPrefs.Save ();
 	}
 
 	public  void monthValueChanged(int value)
@@ -263,9 +280,12 @@ public class SymptomsHistory : MonoBehaviour {
 
 	public void createPDFReport()
 	{
+		if (currentSymptoms.Keys.Count <= 0)
+			return;
 		sendMailProgressBar.SetActive (true);
 		FindObjectOfType<PdfExporter> ().CreatePDF (currentSymptoms);
 		sendMailProgressBar.SetActive (false);
+		SentImage.SetActive (true);
 	}
 		
 	void LoadSymptomsJson()
