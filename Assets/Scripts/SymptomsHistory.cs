@@ -131,9 +131,9 @@ public class SymptomsHistory : MonoBehaviour {
 				currentSymptoms.Add (table.getPartName (), table);
 				symptomsNode [i].parent.gameObject.SetActive (true);
 				byte[] textureData = System.IO.File.ReadAllBytes (table.getImagePath ());
-				Texture2D tex = new Texture2D (400, 400);
+				Texture2D tex = new Texture2D (350, 350);
 				tex.LoadImage (textureData);
-				Sprite sprite = Sprite.Create (tex, new Rect (0, 0, 400, 400), new Vector2 (0.5f, 0.5f));
+				Sprite sprite = Sprite.Create (tex, new Rect (100, 100, 250, 250), new Vector2 (0.5f, 0.5f));
 				symptomsNode [i].symptomImage.sprite = sprite;
 
 				for (int j = 0; j < table.getSymptoms ().Count; j++) {
