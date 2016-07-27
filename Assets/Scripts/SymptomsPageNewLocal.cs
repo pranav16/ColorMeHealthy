@@ -19,6 +19,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 	public List<Slider>howmuch;
 	public List<Slider>bothersome;
 	public List<Toggle>toggles;
+	public GameObject unsavedProgessDialogBox;
 	// Use this for initialization
 	enum states {Ready,LoadFile,Updatevalues,Done};
 	states state;
@@ -201,12 +202,22 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 
 	public void backButtonClicked()
 	{
+		unsavedProgessDialogBox.SetActive (true);
+	}
+
+	public void yesClicked()
+	{
 		if(SymptomsPageNewMain.finalSymptoms.ContainsKey(bodyPartSelected))
 		{
 			SymptomsPageNewMain.finalSymptoms.Remove (bodyPartSelected);
 		}
 		Camera.main.GetComponent<AudioSource> ().Play();
 		SceneManager.LoadScene("SymptomsPageNew");
+	}
+
+	public void noClicked()
+	{
+		unsavedProgessDialogBox.SetActive (false);
 	}
 
 	public void submitButtonClicked()
