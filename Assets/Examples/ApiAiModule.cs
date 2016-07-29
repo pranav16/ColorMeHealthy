@@ -39,6 +39,10 @@ public class ApiAiModule : MonoBehaviour
     private ApiAiUnity apiAiUnity;
     private AudioSource aud;
     public AudioClip listeningSound;
+	public Sprite recording;
+	public Sprite stopRecording;
+	public Button recordButton;
+	private bool isRecording;
 
     private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings
     { 
@@ -136,11 +140,26 @@ public class ApiAiModule : MonoBehaviour
     {
         
     }
+
+	public void buttonClicked()
+	{
+		if (isRecording) {
+			recordButton.image.sprite = recording;
+			StopListening ();
+			isRecording = false;
+		} else {
+			recordButton.image.sprite = stopRecording;
+			StartListening ();
+			isRecording = true;
+		}
+
+	}
     
     public void StartListening()
     {
         Debug.Log("StartListening");
             
+
         if (answerTextField != null)
         {
             answerTextField.text = "Listening...";
