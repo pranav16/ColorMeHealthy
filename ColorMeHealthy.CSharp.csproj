@@ -73,6 +73,12 @@
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
+    <Reference Include="ApiAiSDK">
+      <HintPath>Assets\ApiAiSDK\lib\ApiAiSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="fastJSON">
+      <HintPath>Assets\ApiAiSDK\lib\fastJSON.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ColorMeHealthy.CSharp.Plugins.csproj">
@@ -81,7 +87,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\$Customizer\Scripts\SimplePDF.cs" />
+    <Compile Include="Assets\ApiAiSDK\AndroidRecognitionResult.cs" />
+    <Compile Include="Assets\ApiAiSDK\AndroidRecognizer.cs" />
+    <Compile Include="Assets\ApiAiSDK\ApiAiUnity.cs" />
+    <Compile Include="Assets\ApiAiSDK\ResultWrapper.cs" />
+    <Compile Include="Assets\Examples\ApiAiModule.cs" />
     <Compile Include="Assets\GooglePlayConstants.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Achievement.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
@@ -306,6 +316,7 @@
     <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
+    <None Include="Assets\plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\plugins\Android\MainLibProj\AndroidManifest.xml" />
     <None Include="Assets\plugins\sharpPDF Plugins\sharpPDF.xml" />
   </ItemGroup>
