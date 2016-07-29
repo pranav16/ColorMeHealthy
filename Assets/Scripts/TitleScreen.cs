@@ -11,7 +11,7 @@ public class TitleScreen : MonoBehaviour {
 	public Text debugText;
 	// Use this for initialization
 	void Start () {
-	 //freshBuild ();
+	 freshBuild ();
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
 			// require access to a player's Google+ social graph (usually not needed)
 			.RequireGooglePlus()
@@ -33,12 +33,17 @@ public class TitleScreen : MonoBehaviour {
 
 	public void startClicked()
 	{
+		int isFtue = PlayerPrefs.GetInt ("isFTUE",1);
+		if (isFtue == 1) {
+			SceneManager.LoadScene ("HelpScreen");
+				return;
+		} 
 		SceneManager.LoadScene("MainSelectionScreen");
 	}
 
 	public void helpClicked()
 	{
-		SceneManager.LoadScene("HelpScreen");
+		SceneManager.LoadScene("TitleScreen");
 	}
 
 	public void freshBuild()
@@ -51,11 +56,8 @@ public class TitleScreen : MonoBehaviour {
 		System.IO.File.Delete ( Application.persistentDataPath + "/Color" + "Dairy.json");
 		System.IO.File.Delete ( Application.persistentDataPath + "/Color" + "Personal.json");
 		System.IO.File.Delete ( Application.persistentDataPath +"/color" + "Analytics.json");
-
-
-
-
 	}
+
 
 	public void login()
 	{
