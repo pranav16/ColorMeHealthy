@@ -118,6 +118,12 @@
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
+    <Reference Include="ApiAiSDK">
+      <HintPath>Assets\ApiAiSDK\lib\ApiAiSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="fastJSON">
+      <HintPath>Assets\ApiAiSDK\lib\fastJSON.dll</HintPath>
+    </Reference>
     <Reference Include="JarResolverLib">
       <HintPath>Assets\PlayServicesResolver\Editor\JarResolverLib.dll</HintPath>
     </Reference>
@@ -167,6 +173,7 @@
     <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
+    <None Include="Assets\plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\plugins\Android\MainLibProj\AndroidManifest.xml" />
     <None Include="Assets\plugins\sharpPDF Plugins\sharpPDF.xml" />
   </ItemGroup>
