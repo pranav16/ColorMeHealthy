@@ -117,6 +117,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		if (status == 5 && currentProgressionDay < System.DateTime.Now.DayOfYear) {
 			giftIcon.GetComponent<Button> ().interactable = true;
 			giftIcon.gameObject.GetComponent<Animator> ().enabled = true;
+			//giftIcon.GetComponent<Image> ().sprite = giftIcons [giftIcons.Count - 1];
+			nextTask.gameObject.SetActive (false);
 		}
 		else if (status == 5) {
 			giftIcon.gameObject.GetComponent<Animator> ().enabled = false;

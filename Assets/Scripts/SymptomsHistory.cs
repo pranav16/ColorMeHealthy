@@ -31,6 +31,7 @@ public class SymptomsHistory : MonoBehaviour {
 	public GameObject SentImage;
 	public static Dictionary<string,BodyPartsTable>currentSymptoms = new Dictionary<string, BodyPartsTable>();
 	private Dictionary<string,List<BodyPartsTable>> SymptomsMap;
+	public CanvasScaler scaler;
 	void Start () {
 		SymptomsMap = new Dictionary<string, List<BodyPartsTable>> ();
 		currentSymptoms = new Dictionary<string, BodyPartsTable> ();
@@ -269,6 +270,7 @@ public class SymptomsHistory : MonoBehaviour {
 			Button dateB = GameObject.Instantiate (dateSelectorReference) as Button;
 			dateB.GetComponentInChildren<Text> ().text = date;
 			dateB.gameObject.transform.SetParent (CLayerListOfDates.transform);
+			dateB.transform.localScale = Vector3.one;
 			dateB.gameObject.SetActive (true);
 			dateB.gameObject.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (dateSelectorReference.gameObject.GetComponent<RectTransform>().anchoredPosition.x,postionY);
 			postionY -= dateSelectorReference.gameObject.GetComponent<RectTransform>().rect.height;

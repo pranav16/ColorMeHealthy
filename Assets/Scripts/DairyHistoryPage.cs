@@ -89,6 +89,7 @@ public class DairyHistoryPage : MonoBehaviour {
 			Button dateB = GameObject.Instantiate (dateSelectorReference) as Button;
 			dateB.GetComponentInChildren<Text> ().text = date;
 			dateB.gameObject.transform.SetParent (CLayerListOfDates.transform);
+			dateB.transform.localScale = Vector3.one;
 			dateB.gameObject.SetActive (true);
 			dateB.gameObject.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (dateSelectorReference.gameObject.GetComponent<RectTransform>().anchoredPosition.x,postionY);
 			postionY -= dateSelectorReference.gameObject.GetComponent<RectTransform>().rect.height;
