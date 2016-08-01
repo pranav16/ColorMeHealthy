@@ -72,7 +72,7 @@ public class HelpScreen : MonoBehaviour {
 	IEnumerator timer() {
 		for (int i = 0 ;i < frames.Count; i++ ) {
 			StartCoroutine ("FadeOut");
-			yield return new WaitForSeconds(6.0f);
+			yield return new WaitForSeconds(10.0f);
 		}
 
 		int isFtue = PlayerPrefs.GetInt ("isFTUE",1);

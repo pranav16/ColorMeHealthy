@@ -520,7 +520,7 @@ public class HistoryPage : MonoBehaviour {
 		foreach (symptoms s in table.getSymptoms()) {
 			//string text = "";
 			if (s.name.Contains ("os_")) {
-				GameObject sobj2 = creatDynamicTextGS ("Any other symptoms?", true);
+				GameObject sobj2 = creatDynamicTextGS ("Did anything else make you feel sick today?", true);
 				positionY -= (sobj2.GetComponent<RectTransform> ().rect.size.y );
 				sobj2.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, positionY);
 				symptomsStringObjects.Add (sobj2);

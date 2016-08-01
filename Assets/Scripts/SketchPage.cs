@@ -41,6 +41,7 @@ public class SketchPage : MonoBehaviour {
 		Color color = colourPallet [0].image.color;
 		touchSprite.GetComponent<SpriteRenderer>().color = color;
 		colorSelected = color;
+
 		originalBrushSize = touchSprite.transform.localScale;
 		fillShadeChart ();
 		scaleSliderValueChanged ();
@@ -108,9 +109,11 @@ public class SketchPage : MonoBehaviour {
 		quitPopUp.SetActive (false);
 	}
 
+	//just use this function to hide all dialogboxes
 	public void quitPopUpNoClicked()
 	{
 		quitPopUp.SetActive (false);
+
 	}
 
 	public void deleteLines()
@@ -143,6 +146,7 @@ public class SketchPage : MonoBehaviour {
 
 	public void save()
 	{
+		FindObjectOfType<TabsHandler> ().showDialog = false;
 		//colourPallet [2].GetComponent<AudioSource> ().Play ();
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent("Saved_Picture",new Dictionary<string, object>());
 		int currentArtNumber = PlayerPrefs.GetInt("paintingNumber",0);

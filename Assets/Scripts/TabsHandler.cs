@@ -9,6 +9,9 @@ public class TabsHandler : MonoBehaviour
 	public GameObject StatusTab;
 	public List<Sprite>giftTabsIcons;
 	public List<Sprite>statusTabIcons;
+	public GameObject dialog;
+	public bool showDialog;
+	private string screenToLoad;
 	// Use this for initialization
 	void Start ()
 	{
@@ -91,10 +94,17 @@ public class TabsHandler : MonoBehaviour
 
 
 		}
+
 		if (isButton)
 			Camera.main.GetComponent<AudioSource> ().Play ();
-		if (isButton)
+		if (isButton && !showDialog) {
 			SceneManager.LoadScene (sceenToLoad);
+		} else if(isButton){
+			dialog.SetActive (true);
+			screenToLoad = sceenToLoad;
+		
+		}
+			
 		return isButton;
 	}
 
@@ -113,4 +123,17 @@ public class TabsHandler : MonoBehaviour
 	{
 		SceneManager.LoadScene("TitleScreen");
 	}
+
+	public void PopUpNoClicked()
+	{
+		dialog.SetActive (false);
+
+	}
+	public void YesClicked()
+	{
+
+		dialog.SetActive (false);
+		SceneManager.LoadScene ("MainSelectionScreen");
+	}
+
 }

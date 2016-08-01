@@ -189,7 +189,7 @@ public class SymptomsHistory : MonoBehaviour {
 		foreach (symptoms GeneralSymptom in  generalSymptoms.getSymptoms ()) {
 			generalSymptomsText [indexForText].text = "";
 			if (GeneralSymptom.name.Contains ("os_")) {
-				generalSymptomsText [indexForText].text = "Any other symptoms? ";
+				generalSymptomsText [indexForText].text = "Did anything else make you feel sick today? ";
 				indexForText++;
 				generalSymptomsText [indexForText].text = GeneralSymptom.name.Replace ("os_", "");
 				indexForText++;
@@ -237,7 +237,7 @@ public class SymptomsHistory : MonoBehaviour {
 				if (GeneralSymptom.name.Contains ("throw")) {
 					generalSymptomsText [indexForText].text = "How many times ?" ;
 					indexForText++;
-					generalSymptomsText [indexForText].text =  GeneralSymptom.painScale.ToString("0.0");
+					generalSymptomsText [indexForText].text =  GeneralSymptom.painScale.ToString("0");
 					indexForText++;
 				}
 			}
