@@ -23,8 +23,8 @@ public class QuestSystem : MonoBehaviour
 
 	void Start ()
 	{
-		//string fileName = Application.persistentDataPath + "/Color" + "QuestSaveData.json";
-		//System.IO.File.Delete (fileName);
+		string fileName = Application.persistentDataPath + "/Color" + "QuestSaveData.json";
+		System.IO.File.Delete (fileName);
 		if (instance == null) {
 			instance = this;
 			instance.init ();
