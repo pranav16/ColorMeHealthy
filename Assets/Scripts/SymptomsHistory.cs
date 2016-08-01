@@ -121,32 +121,34 @@ public class SymptomsHistory : MonoBehaviour {
 		currentSymptoms.Clear ();
 		if (SymptomsMap.ContainsKey (id)) {
 			List<BodyPartsTable> tables = SymptomsMap [id];
-			for (int i = 0; i < tables.Count; i++) {
+
+			for (int i = 0, k = 0; i < tables.Count; i++ ,k++) {
 				BodyPartsTable table = tables [i];
 				if (table.getPartName ().Contains ("General Symptoms")) {
 					currentSymptoms.Add (table.getPartName (), table);
 					populateGeneralSymptoms (table);
+					k = i - 1;
 					continue;
 				}
-				symptomsNode [i].partName.text = table.getPartName ();
+				symptomsNode [k].partName.text = table.getPartName ();
 				currentSymptoms.Add (table.getPartName (), table);
-				symptomsNode [i].parent.gameObject.SetActive (true);
+				symptomsNode [k].parent.gameObject.SetActive (true);
 				byte[] textureData = System.IO.File.ReadAllBytes (table.getImagePath ());
 				Texture2D tex = new Texture2D (350, 350);
 				tex.LoadImage (textureData);
 				Sprite sprite = Sprite.Create (tex, new Rect (100, 100, 250, 250), new Vector2 (0.5f, 0.5f));
-				symptomsNode [i].symptomImage.sprite = sprite;
+				symptomsNode [k].symptomImage.sprite = sprite;
 
 				for (int j = 0; j < table.getSymptoms ().Count; j++) {
 
-					symptomsNode [i].BotherSymptom [j].text = symptomPointsToText ((int)table.getSymptoms () [j].botherScale);
-					symptomsNode [i].painSymptom [j].text = symptomPointsToText ((int)table.getSymptoms () [j].painScale);
-					symptomsNode [i].symptomName [j].text = table.getSymptoms () [j].name;
+					symptomsNode [k].BotherSymptom [j].text = symptomPointsToText ((int)table.getSymptoms () [j].botherScale);
+					symptomsNode [k].painSymptom [j].text = symptomPointsToText ((int)table.getSymptoms () [j].painScale);
+					symptomsNode [k].symptomName [j].text = table.getSymptoms () [j].name;
 
 				}
 
-				for (int j = table.getSymptoms ().Count; j < symptomsNode [i].symptomCell.Count; j++)
-					symptomsNode [i].symptomCell [j].SetActive (false);
+				for (int j = table.getSymptoms ().Count; j < symptomsNode [k].symptomCell.Count; j++)
+					symptomsNode [k].symptomCell [j].SetActive (false);
 				
 			}
 
@@ -166,11 +168,11 @@ public class SymptomsHistory : MonoBehaviour {
 
 		float sizeOfScroll = count * symptomsNode [0].parent.gameObject.GetComponent<RectTransform> ().rect.height + GeneralSymptomNode.GetComponent<RectTransform>().rect.height;
 		CLayerSymptoms.GetComponent<RectTransform> ().sizeDelta = new Vector2(0,sizeOfScroll);
-		float positionY = sizeOfScroll / 2 - GeneralSymptomNode.GetComponent<RectTransform>().rect.height /2;
+		float positionY = sizeOfScroll / 2 - GeneralSymptomNode.GetComponent<RectTransform>().rect.height/2;
 		GeneralSymptomNode.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, positionY);
 		positionY -= (GeneralSymptomNode.GetComponent<RectTransform> ().rect.height/2 + symptomsNode [0].parent.gameObject.GetComponent<RectTransform> ().rect.height/2);
 
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i <= count; i++) {
 
 			symptomsNode [i].parent.gameObject.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, positionY);
 			positionY -= symptomsNode [i].parent.gameObject.GetComponent<RectTransform> ().rect.height;

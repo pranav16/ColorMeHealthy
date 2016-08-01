@@ -45,18 +45,18 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 		}
 
 
-		index = PlayerPrefs.GetInt ("stickersunlocked", 1);
+		index = PlayerPrefs.GetInt ("stickersunlocked", 0);
 		int dayOfYear = PlayerPrefs.GetInt("stickerUnlockDay",System.DateTime.Now.DayOfYear - 1);
 		if (dayOfYear < System.DateTime.Now.DayOfYear) {
 			index++;
 			dayOfYear = System.DateTime.Now.DayOfYear;
 			PlayerPrefs.SetInt ("stickersunlocked",index);
 			PlayerPrefs.SetInt ("stickerUnlockDay",System.DateTime.Now.DayOfYear);
-			PlayerPrefs.SetInt ("unlockedStickers", 1);
+			PlayerPrefs.SetInt ("unlockedStickers", 0);
 	
 		}
 		int unlockedSticker = 	PlayerPrefs.GetInt ("unlockedStickers", 0);
-		if (unlockedSticker == 1) {
+		if (unlockedSticker == 0) {
 			dailyRewardPopUp.SetActive (true);
 			foreach (GameObject obj in objectsToBeDisabled) {
 				BoxCollider[]colliders = obj.GetComponentsInChildren<BoxCollider> ();
@@ -64,7 +64,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 					col.enabled = false;
 			}
 		}
-		PlayerPrefs.SetInt ("unlockedStickers", 0);
+		PlayerPrefs.SetInt ("unlockedStickers", 1);
 		PlayerPrefs.Save ();
 		UnlockStickers (index);
 		LoadScene();
@@ -78,7 +78,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			count ++;
 		if (  FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Water_Plant") > 0)
 			count ++;
-		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Completed_Goal") > 3)
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Completed_Goal") >= 3)
 			count++;
 		if ( FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Write_Dairy") > 0)
 			count ++;
@@ -93,7 +93,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			return 0;
 		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Saved_Picture") < 0)
 			return 1;
-		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Completed_Goal") < 3)
+		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Completed_Goal") <= 3)
 			return 2;
 		if (FindObjectOfType<AnalyticsSystem> ().getCounterValue ("Write_Dairy") < 0)
 			return 3;
@@ -317,6 +317,8 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 
 			firstTouchDown = false;
 			mainScroller.SetActive (false);
+			Trash.SetActive (false);
+			trashButton.gameObject.SetActive (false);
 
 		} else {
 			foreach (GameObject obj in objectsToBeDisabled) {
