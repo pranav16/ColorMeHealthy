@@ -23,7 +23,7 @@ public class AnalyticsSystem : MonoBehaviour
 
 	private bool init ()
 	{
-		//System.IO.File.Delete (Application.persistentDataPath + "/color" + "Analytics.json");
+		System.IO.File.Delete (Application.persistentDataPath + "/color" + "Analytics.json");
 		startTimeStamp = System.DateTime.Now.DayOfYear.ToString();
 		Counters = new Dictionary<string, int> ();
 		loadAnalytics ();
