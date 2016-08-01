@@ -19,13 +19,10 @@ public class PdfExporter : MonoBehaviour {
 	private string emailID;
 	// Use this for initialization
 	void Start () {
-		//if (instance == null) {
-		//	instance = this;
-		//	instance.init ();
-		//} else if (instance != this)
-			//Destroy (gameObject);
-
-		//DontDestroyOnLoad (gameObject);
+		
+	    //was a singleton before.
+			init ();
+	
 	}
 
 	public void setEmailAddress(string emailID)

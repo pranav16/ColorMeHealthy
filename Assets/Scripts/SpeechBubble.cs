@@ -27,7 +27,7 @@ public class SpeechBubble : MonoBehaviour {
 			if (index < speechText.Count)
 				currentSpeechText.GetComponent<SpriteRenderer>().sprite = speechText[index];
 		}
-		Invoke ("startScaleDown",1);
+		Invoke ("startScaleDown",4);
 	}
 	
 	// Update is called once per frame
@@ -37,7 +37,7 @@ public class SpeechBubble : MonoBehaviour {
 
 	void startScaleDown()
 	{
-		StartCoroutine ("scaleSpeechBoxDown",1);
+		StartCoroutine ("scaleSpeechBoxDown",4);
 	}
 
 	IEnumerator scaleSpeechBoxDown(float time)

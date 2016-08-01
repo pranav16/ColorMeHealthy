@@ -11,7 +11,7 @@ public class TitleScreen : MonoBehaviour {
 	public Text debugText;
 	// Use this for initialization
 	void Start () {
-	 	//freshBuild ();
+	 	freshBuild ();
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
 			// require access to a player's Google+ social graph (usually not needed)
 			.RequireGooglePlus()
@@ -43,7 +43,7 @@ public class TitleScreen : MonoBehaviour {
 
 	public void helpClicked()
 	{
-		SceneManager.LoadScene("TitleScreen");
+		SceneManager.LoadScene("HelpScreen");
 	}
 
 	public void freshBuild()
