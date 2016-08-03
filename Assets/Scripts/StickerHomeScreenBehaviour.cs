@@ -358,7 +358,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 			giftIcon.sprite = giftIcons [giftIcons.Count - 1];
 			nextTask.gameObject.SetActive (false);
 			int giftCount = PlayerPrefs.GetInt ("stickersunlocked", 1) + 1;
-			PlayerPrefs.SetInt ("stickersunlocked", giftCount + 1);
+			PlayerPrefs.SetInt ("stickersunlocked", giftCount);
 			index = giftCount;
 			PlayerPrefs.Save ();
 			foreach (Button btn in giftButtons)

@@ -11,7 +11,9 @@ public class TitleScreen : MonoBehaviour {
 	public Text debugText;
 	// Use this for initialization
 	void Start () {
-	 	//freshBuild ();
+		#if UNITY_EDITOR
+	 	freshBuild ();
+		#endif
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
 			// require access to a player's Google+ social graph (usually not needed)
 			.RequireGooglePlus()

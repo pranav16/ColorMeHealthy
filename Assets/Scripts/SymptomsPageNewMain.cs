@@ -38,6 +38,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		currentState = States.waitForFirstTouch;
 		touchLocations = new List<Vector3>();
 		lineGameObjects = new List<GameObject>();
+		loadSymptoms ();
 		if (mainSymptoms == null)
 			mainSymptoms = new BodyPartsTable ();
 		else
@@ -331,58 +332,48 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		for (int i = 0;i < 8;i++)
 		{
 			for (int j = 0; j < mainSymptoms.getSymptoms ().Count; j++) {
-				if (i == 7 && questions[2].text == mainSymptoms.getSymptoms()[j].name) {
-					toggles [7].isOn = true;
+				if (questions[3].text == mainSymptoms.getSymptoms()[j].name && mainSymptoms.getSymptoms()[j].botherScale == -1.0f) {
+					toggles [8].isOn = true;
 				}
 
 				if (toggles [i].GetComponentInChildren<Text> ().text == mainSymptoms.getSymptoms()[j].name) 
 				{
 					int k = i;
-					if (k == 3) {
+
+		   if (k == 3 && mainSymptoms.getSymptoms()[j].botherScale == -1.0f) {
 						toggles [i].isOn = true;
 						howManyTimes.value = (int)mainSymptoms.getSymptoms () [j].painScale;
 						continue;
-					} else if (k > 1) {
-						k -= 1;
-					}
+					} 
+			else if(mainSymptoms.getSymptoms()[j].botherScale >= 0)
+					{
 					toggles [i].isOn = true;
+						if (k > 3) {
+							k -= 1;
+						}
 					howMuch [k].value = mainSymptoms.getSymptoms () [j].painScale;
 					botherSome [k].value = mainSymptoms.getSymptoms ()[j].botherScale;
 				}
-			
-				if (mainSymptoms.getSymptoms () [j].name.Contains ("os_"))
-					otherSymptoms.text = mainSymptoms.getSymptoms () [j].name.Replace ("os_","");
-				if (mainSymptoms.getSymptoms () [j].name.Contains ("bothersome_"))
-					WhatsBothering.text = mainSymptoms.getSymptoms () [j].name.Replace ("bothersome_","");
-				if (mainSymptoms.getSymptoms () [j].name.Contains ("FeelingToday_"))
-					FeelingToday.text = mainSymptoms.getSymptoms () [j].name.Replace ("FeelingToday_","");
-				if (mainSymptoms.getSymptoms () [j].name.Contains ("Bestthing_"))
-					bestThingToday.text = mainSymptoms.getSymptoms () [j].name.Replace ("Bestthing_","");
-					
+	
 			}
-
+		if (mainSymptoms.getSymptoms () [j].name.Contains ("os_"))
+					otherSymptoms.text = mainSymptoms.getSymptoms () [j].name.Replace ("os_","");
+		if (mainSymptoms.getSymptoms () [j].name.Contains ("bothersome_"))
+					WhatsBothering.text = mainSymptoms.getSymptoms () [j].name.Replace ("bothersome_","");
+		if (mainSymptoms.getSymptoms () [j].name.Contains ("FeelingToday_"))
+					FeelingToday.text = mainSymptoms.getSymptoms () [j].name.Replace ("FeelingToday_","");
+		if (mainSymptoms.getSymptoms () [j].name.Contains ("Bestthing_"))
+					bestThingToday.text = mainSymptoms.getSymptoms () [j].name.Replace ("Bestthing_","");
+		if (mainSymptoms.getSymptoms () [j].name.Contains ("Bothersome_"))
+					WhatsBothering.text = mainSymptoms.getSymptoms () [j].name.Replace ("Bothersome_","");
 		}
+		
+		
+			
 
 	}
-
-	public void ToggleValueChanged(int value)
-	{
-		return;
-//		int index = 0;
-//		if (value > 1)
-//			index = value - 1;
-//		if (toggles[value].isOn) {
-//			botherSome [index].interactable = true;
-//			howMuch [index].interactable = true;
-//		} else {
-//			botherSome [index].interactable = false;
-//			howMuch [index].interactable = false;
-//			botherSome [index].value = botherSome [index].minValue;
-//			howMuch [index].value = howMuch [index].minValue;
-//		}
-
 	}
-
+		
 	public void SliderValueChanged(int value)
 	{
 		int index = value;
@@ -496,20 +487,30 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	public void backButtonClicked()
 	{
 		Camera.main.GetComponent<AudioSource> ().Play();
-	
 		SceneManager.LoadScene("MainSelectionScreen");
 	}
 
 	public void editJSONFile()
 	{
 		Dictionary<string ,object> analytics = new Dictionary<string, object> ();
-		Debug.Log("is file present");
+
 		string filePath = "Symptoms.json";
 		string fileName = Application.persistentDataPath + "/Color" + filePath;
 		string rawjson = System.IO.File.ReadAllText(fileName);
-		Debug.Log("is file present");
-		JSONObject mainJson = new JSONObject(rawjson);
-		JSONObject Entries = mainJson.GetField("Entires");
+		//new json being build
+		JSONObject mainJson = new JSONObject();
+		JSONObject entries = new  JSONObject(JSONObject.Type.ARRAY);
+		mainJson.AddField("Entires",entries);
+		//checking if edit is happening on the same date. Change data structure if this causes performance issues.
+		JSONObject oldData = new JSONObject (rawjson);
+		JSONObject Entries = oldData.GetField ("Entires");
+		foreach (JSONObject obj in Entries.list) {
+			if (obj.HasField ("Date") && obj.GetField ("Date").str == System.DateTime.Now.ToString ("MM_dd_yyyy"))
+				continue;
+			
+			entries.Add(obj);
+		}
+
 		JSONObject json = new JSONObject();
 		json.AddField("Date", System.DateTime.Now.ToString("MM_dd_yyyy"));
 		JSONObject BodyParts = new JSONObject();
@@ -536,7 +537,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			BodyParts.AddField(table.getPartName (), obj);
 		}
 		//FindObjectOfType<AnalyticsSystem> ().CustomEvent ("Sysmtoms Page Final Symptom",analytics);
-		  Entries.Add(json);
+		  entries.Add(json);
 		  string serializedJson = mainJson.Print();
 		  Debug.Log(mainJson.Print());
 		  System.IO.File.WriteAllText(fileName, serializedJson);
@@ -557,7 +558,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 	        JSONObject entries = new  JSONObject(JSONObject.Type.ARRAY);
 	        mainJson.AddField("Entires",entries);
 	        JSONObject json = new JSONObject();
-	        json.AddField("Date", System.DateTime.Now.ToString("MM_dd_yyyy"));
+		    json.AddField("Date", System.DateTime.Now.ToString("MM_dd_yyyy"));
 	        JSONObject BodyParts = new JSONObject();
 	        json.AddField("BodyParts", BodyParts);
 		   foreach (string key in finalSymptoms.Keys) {
@@ -604,9 +605,54 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		finalSymptoms.Clear();
 		questions [0].gameObject.GetComponent<AudioSource> ().Play ();
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent ("Symptoms Main Earse Clicked",new Dictionary<string, object>()); 
+	
+	}
 
+	public void loadSymptoms()
+	{
+		string filePath = "Symptoms.json";
+		string fileName = Application.persistentDataPath + "/Color" + filePath;
+		if (!System.IO.File.Exists (fileName))
+			return;
+		string rawjson = System.IO.File.ReadAllText(fileName);
+
+		JSONObject oldData = new JSONObject (rawjson);
+		JSONObject Entries = oldData.GetField ("Entires");
+		foreach (JSONObject obj in Entries.list) {
+			if (obj.HasField ("Date") && obj.GetField ("Date").str != System.DateTime.Now.ToString ("MM_dd_yyyy"))
+				continue;
+			JSONObject bps =  obj.GetField ("BodyParts");
+			if (bps == null)
+				continue;
+			foreach (string keys in bps.keys)
+			{
+				JSONObject bodypartJson = bps.GetField (keys);
+				BodyPartsTable bodyPart = new BodyPartsTable();
+				bodyPart.setPartName (keys);
+				bodyPart.setImagePath (bodypartJson.GetField("imgSrc").str);
+				JSONObject symptoms = bodypartJson.GetField ("symptoms");
+				foreach(JSONObject sy in symptoms.list)
+				{
+					symptoms symptom = new symptoms ();
+					symptom.name = sy.GetField("symptomname").str;
+					symptom.painScale = sy.GetField("painscale").f ;
+					symptom.botherScale = sy.GetField("bothersomescale").f ;
+					bodyPart.addSymptoms (symptom);
+				}
+				Debug.Log (keys);
+				if (!finalSymptoms.ContainsKey (keys))
+					finalSymptoms.Add (keys, bodyPart);
+				else
+					finalSymptoms [keys] = bodyPart;
+				if (keys.Contains ("General Symptoms")) {
+					mainSymptoms = bodyPart;
+				}
+			}
+
+		}
 
 	}
+
 	public void loadAndSetCustomization()
 	{
 		FindObjectOfType<GenderSelector> ().setInitialStates();

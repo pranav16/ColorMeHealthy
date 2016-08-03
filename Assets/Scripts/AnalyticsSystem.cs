@@ -23,7 +23,9 @@ public class AnalyticsSystem : MonoBehaviour
 
 	private bool init ()
 	{
-		//System.IO.File.Delete (Application.persistentDataPath + "/color" + "Analytics.json");
+		#if UNITY_EDITOR
+		System.IO.File.Delete (Application.persistentDataPath + "/color" + "Analytics.json");
+		#endif
 		startTimeStamp = System.DateTime.Now.DayOfYear.ToString();
 		Counters = new Dictionary<string, int> ();
 		loadAnalytics ();
