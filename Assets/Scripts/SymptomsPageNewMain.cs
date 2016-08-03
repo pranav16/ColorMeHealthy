@@ -399,8 +399,8 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		{
 			int j = i;
 			if (j == 3) {
-				//if (!toggles [i].isOn)
-					//continue;
+				if (!toggles [i].isOn)
+					continue;
 				symptoms symptom = new symptoms();
 				symptom.name = toggles [i].GetComponentInChildren<Text> ().text;
 				symptom.painScale = howManyTimes.value + 1;
@@ -408,7 +408,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 				table.addSymptoms (symptom);
 				continue;
 			}
-			else if (j > 1)
+			else if (j > 3)
 				j -= 1;
 			if (toggles [i].isOn) {
 				symptoms symptom = new symptoms ();
