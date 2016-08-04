@@ -133,7 +133,7 @@ public class TabsHandler : MonoBehaviour
 	{
 
 		dialog.SetActive (false);
-		SceneManager.LoadScene ("MainSelectionScreen");
+		SceneManager.LoadScene (screenToLoad);
 	}
 
 }

@@ -44,6 +44,7 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			loadBodyPartsTable ();
 		else if (state == states.Updatevalues)
 			updateUi ();
+		loadPreviousState ();
 		selectedSymptom.setPartName (bodyPartSelectedText.text);
 	
 
@@ -135,6 +136,27 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 		partsRender.sprite = Resources.Load<Sprite> (spriteNameToBodyPartSelected())  as Sprite;
  		state = states.Done;
 
+	}
+	void loadPreviousState()
+	{
+		if (!SymptomsPageNewMain.finalSymptoms.ContainsKey (bodyPartSelectedText.text)) 
+			return;
+
+			BodyPartsTable table = SymptomsPageNewMain.finalSymptoms [bodyPartSelectedText.text];
+			for (int i = 0; i < symptomsHeader.Count; i++) {
+
+			for (int j = 0; j < table.getSymptoms ().Count; j++) {
+
+				if (symptomsHeader [i].text == table.getSymptoms () [j].name) {
+					howmuch [i].value = table.getSymptoms () [j].painScale;
+					bothersome[i].value = table.getSymptoms () [j].botherScale;
+					toggles [i].isOn = true;
+				}
+			}
+
+		}
+		
+		selectedSymptom = table;
 	}
 
 	void setSymptomsHeader(List<string> headers)
