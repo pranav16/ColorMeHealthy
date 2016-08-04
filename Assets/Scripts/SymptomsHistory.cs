@@ -10,12 +10,14 @@ public class SymptomsHistory : MonoBehaviour {
 		public Image parent;
 		public Image symptomImage;
 		public Text partName;
+		public Text time;
 		public List<Text> symptomName;
 		public List<Text>painSymptom;
 		public List<Text>BotherSymptom;
 		public List<GameObject> symptomCell;
 	};
 
+	public GameObject localSymptomsNode;
 	public Dropdown monthSelector;
 	public Dropdown yearSelector;
 	public Button dateSelectorReference;
@@ -45,6 +47,8 @@ public class SymptomsHistory : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0))
 			SentImage.SetActive (false);
 	
+		for (int i = 0; i < localSymptomsNode.gameObject.transform.childCount; i++)
+			Debug.Log ("child name : " + localSymptomsNode.gameObject.transform.GetChild (i).name);
 	}
 
 	bool initialize()
@@ -130,7 +134,9 @@ public class SymptomsHistory : MonoBehaviour {
 					k = i - 1;
 					continue;
 				}
+
 				symptomsNode [k].partName.text = table.getPartName ();
+				symptomsNode [k].time.text = table.getTimeStamp ();
 				currentSymptoms.Add (table.getPartName (), table);
 				symptomsNode [k].parent.gameObject.SetActive (true);
 				byte[] textureData = System.IO.File.ReadAllBytes (table.getImagePath ());
@@ -316,6 +322,7 @@ public class SymptomsHistory : MonoBehaviour {
 				BodyPartsTable bodyPart = new BodyPartsTable();
 				bodyPart.setPartName (keys);
 				bodyPart.setImagePath (bodypartJson.GetField("imgSrc").str);
+				bodyPart.setTimeStamp (bodypartJson.GetField("timestamp").str);
 				JSONObject symptoms = bodypartJson.GetField ("symptoms");
 				foreach(JSONObject sy in symptoms.list)
 				{

@@ -191,8 +191,6 @@ public class SymptomsPageNewLocal : MonoBehaviour {
 			howmuch [index].value = howmuch [index].minValue;
 			bothersome [index].value = bothersome [index].minValue;
 		}
-	
-			
 	}
 
 	public void painChange(Slider slide)

@@ -16,6 +16,7 @@ public class ColorObjectHandler : MonoBehaviour {
 //		string fileName = Application.persistentDataPath + "/Color" + filePath;
 //		System.IO.File.Delete (fileName);
 		FindObjectOfType<AnalyticsSystem> ().CustomEvent("CustomisationScreen",new Dictionary<string, object>());
+
 	}
 
 

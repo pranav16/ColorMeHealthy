@@ -523,6 +523,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			analytics ["Body Part"] = table.getPartName ();
 			obj.AddField ("symptoms",arr);
 			obj.AddField ("imgSrc", table.getImagePath ());
+			obj.AddField ("timestamp", table.getTimeStamp ());
 			foreach (symptoms symptom in table.getSymptoms()) {
 				JSONObject sy = new JSONObject ();
 				sy.AddField ("symptomname", symptom.name);
@@ -570,6 +571,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			analytics ["Body Part"] = table.getPartName ();
 			obj.AddField ("symptoms",arr);
 			obj.AddField ("imgSrc", table.getImagePath ());
+			obj.AddField ("timestamp", table.getTimeStamp ());
 			foreach (symptoms symptom in table.getSymptoms()) {
 				JSONObject sy = new JSONObject ();
 				sy.AddField ("symptomname", symptom.name);

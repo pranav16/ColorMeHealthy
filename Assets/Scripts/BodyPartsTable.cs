@@ -15,9 +15,13 @@ public class BodyPartsTable  {
     private string partName;
 	private string imageFilePath;
 	List<symptoms> symptoms;
+	private string timeStamp;
+
      public BodyPartsTable()
     {
+		timeStamp = string.Format ("{0:HH:mm }", System.DateTime.Now);// System.DateTime.Now.TimeOfDay.ToString();
 		symptoms = new List<symptoms>();
+
     }
     public void addSymptoms(symptoms symptom)
     {
@@ -47,4 +51,13 @@ public class BodyPartsTable  {
 	{
 		return imageFilePath;
 	}
+	public string getTimeStamp()
+	{
+		return timeStamp;
+	}
+	public void setTimeStamp(string time)
+	{
+		 timeStamp = time;
+	}
+
 }

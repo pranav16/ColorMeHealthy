@@ -17,7 +17,8 @@ public class ContiniousAudioScript : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-	
+		int childCount = 	transform.childCount;
+		Debug.Log ("childCount" + childCount);
 	}
 	
 	// Update is called once per frame
