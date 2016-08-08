@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 public class SymptomsHistory : MonoBehaviour {
 
 	[System.Serializable]
@@ -287,6 +288,10 @@ public class SymptomsHistory : MonoBehaviour {
 			
 	}
 
+	public void goToTrends()
+	{
+		SceneManager.LoadScene ("Graphing");
+	}
 
 	public void createPDFReport()
 	{
