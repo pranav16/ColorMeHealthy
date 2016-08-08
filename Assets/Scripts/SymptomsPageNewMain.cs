@@ -332,7 +332,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 		for (int i = 0;i < 8;i++)
 		{
 			for (int j = 0; j < mainSymptoms.getSymptoms ().Count; j++) {
-				if (questions[3].text == mainSymptoms.getSymptoms()[j].name && mainSymptoms.getSymptoms()[j].botherScale == -1.0f) {
+				if (questions[3].text == mainSymptoms.getSymptoms()[j].name && mainSymptoms.getSymptoms()[j].botherScale == -1.0f && mainSymptoms.getSymptoms()[j].painScale == 1.0f) {
 					toggles [8].isOn = true;
 				}
 
@@ -421,6 +421,7 @@ public class SymptomsPageNewMain : MonoBehaviour {
 			symptoms symptom = new symptoms ();
 			symptom.name = questions [3].text;
 			symptom.botherScale = -1.0f;
+			symptom.painScale = 1.0f;
 			table.addSymptoms (symptom);
 		} else {
 			symptoms symptom = new symptoms ();

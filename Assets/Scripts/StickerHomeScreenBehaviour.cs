@@ -23,7 +23,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 
 	public GameObject stickerButton;
 	public GameObject trashButton;
-	// Use this for initialization
+
 	public GameObject dailyRewardPopUp;
 	public List<Sprite> giftIcons;
 	public List<Sprite>nextTasks;
