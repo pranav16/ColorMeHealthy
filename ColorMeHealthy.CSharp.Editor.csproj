@@ -127,6 +127,21 @@
     <Reference Include="JarResolverLib">
       <HintPath>Assets\PlayServicesResolver\Editor\JarResolverLib.dll</HintPath>
     </Reference>
+    <Reference Include="DOTweenEditor">
+      <HintPath>Assets\Graph_Maker\DOTween\Editor\DOTweenEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween43">
+      <HintPath>Assets\Graph_Maker\DOTween\DOTween43.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween46">
+      <HintPath>Assets\Graph_Maker\DOTween\DOTween46.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>Assets\Graph_Maker\DOTween\DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween50">
+      <HintPath>Assets\Graph_Maker\DOTween\DOTween50.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ColorMeHealthy.CSharp.Plugins.csproj">
@@ -160,6 +175,19 @@
     <Compile Include="Assets\GooglePlayGames\Editor\xcode\Sections.cs" />
     <Compile Include="Assets\GooglePlayGames\Editor\xcode\Serializer.cs" />
     <Compile Include="Assets\GooglePlayGames\Editor\xcode\Utils.cs" />
+    <Compile Include="Assets\Graph_Maker\Examples\X_Plot_Overtime\Editor\WMG_X_Sample_1_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Axis_Graph_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Bezier_Band_Graph_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_E_Util.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_EnumFlagDrawer.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Hierarchical_Tree_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Legend_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Pie_Graph_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Pie_Graph_Slice_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Prefab_Gen.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Radar_Graph_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Ring_Graph_E.cs" />
+    <Compile Include="Assets\Graph_Maker\Scripts\Editor\WMG_Series_E.cs" />
     <Compile Include="Assets\PlayServicesResolver\Editor\DefaultResolver.cs" />
     <Compile Include="Assets\PlayServicesResolver\Editor\IResolver.cs" />
     <Compile Include="Assets\PlayServicesResolver\Editor\PlayServicesResolver.cs" />
@@ -173,6 +201,14 @@
     <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
+    <None Include="Assets\Graph_Maker\DOTween\DOTween.XML" />
+    <None Include="Assets\Graph_Maker\DOTween\DOTween43.xml" />
+    <None Include="Assets\Graph_Maker\DOTween\DOTween46.xml" />
+    <None Include="Assets\Graph_Maker\DOTween\DOTween50.xml" />
+    <None Include="Assets\Graph_Maker\DOTween\Editor\DOTweenEditor.XML" />
+    <None Include="Assets\Graph_Maker\ReadMe-1.5.5.txt" />
+    <None Include="Assets\Graph_Maker\Shaders\AreaShading.shader" />
+    <None Include="Assets\Graph_Maker\Shaders\AreaShading_SF.shader" />
     <None Include="Assets\plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\plugins\Android\MainLibProj\AndroidManifest.xml" />
     <None Include="Assets\plugins\sharpPDF Plugins\sharpPDF.xml" />
