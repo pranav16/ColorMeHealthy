@@ -79,6 +79,18 @@
     <Reference Include="fastJSON">
       <HintPath>Assets\ApiAiSDK\lib\fastJSON.dll</HintPath>
     </Reference>
+    <Reference Include="DOTween43">
+      <HintPath>Assets\Graph_Maker\DOTween\DOTween43.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween46">
+      <HintPath>Assets\Graph_Maker\DOTween\DOTween46.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>Assets\Graph_Maker\DOTween\DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween50">
+      <HintPath>Assets\Graph_Maker\DOTween\DOTween50.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\plugins\sharpPDF Plugins\AssemblyInfo.cs" />
@@ -138,6 +150,14 @@
     <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
+    <None Include="Assets\Graph_Maker\DOTween\DOTween.XML" />
+    <None Include="Assets\Graph_Maker\DOTween\DOTween43.xml" />
+    <None Include="Assets\Graph_Maker\DOTween\DOTween46.xml" />
+    <None Include="Assets\Graph_Maker\DOTween\DOTween50.xml" />
+    <None Include="Assets\Graph_Maker\DOTween\Editor\DOTweenEditor.XML" />
+    <None Include="Assets\Graph_Maker\ReadMe-1.5.5.txt" />
+    <None Include="Assets\Graph_Maker\Shaders\AreaShading.shader" />
+    <None Include="Assets\Graph_Maker\Shaders\AreaShading_SF.shader" />
     <None Include="Assets\plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\plugins\Android\MainLibProj\AndroidManifest.xml" />
     <None Include="Assets\plugins\sharpPDF Plugins\sharpPDF.xml" />
