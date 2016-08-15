@@ -11,42 +11,145 @@ public class GraphAggregator : MonoBehaviour {
 	private string weekSelected;
 	private string monthSelected;
 	private string yearSelected;
+    private string symptomSelected;
 
-	public Dropdown monthDropdown;
+    private WMG_Series painSeries;
+    private WMG_Series botherSeries;
+
+    public Dropdown monthDropdown;
 	public Dropdown yearDropdown;
 	public Dropdown weekDropdown;
+    public GameObject emptyGraphPrefab;
+    public List<string> monthsLabels;
+    public List<Vector2> data;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		dateToSymtpoms = new Dictionary<string, List<BodyPartsTable>> ();
 		currentSelection = new Dictionary<string, List<BodyPartsTable>> ();
 		LoadSymptomsJson ();
 		populateDateDropDowns ();
-
-	}
+        initGraph();
+        symptomSelected = "Pain";
+        weekChanged();
+    }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
 
+    void initGraph()
+    {
 
-	public void monthChanged ()
+        WMG_Axis_Graph graph = emptyGraphPrefab.GetComponent<WMG_Axis_Graph>();
+        List<string> groups = new List<string>();
+        groups.Add("None");
+        groups.Add("Mild");
+        groups.Add("Moderate");
+        groups.Add("Severity");
+        graph.groups.SetList(groups);
+        graph.yAxis.LabelType = WMG_Axis.labelTypes.groups;
+        graph.yAxis.AxisNumTicks = groups.Count;
+        graph.yAxis.AxisMaxValue = groups.Count - 1;
+        setUpXAxis(monthsLabels);
+        painSeries = graph.addSeries();
+        botherSeries = graph.addSeries();
+        botherSeries.lineColor = Color.red;
+        painSeries.UseXDistBetweenToSpace = true;
+        botherSeries.UseXDistBetweenToSpace = true;
+      
+    }
+
+    private void setUpXAxis(List<string> LabelSet)
+    {
+        WMG_Axis_Graph graph = emptyGraphPrefab.GetComponent<WMG_Axis_Graph>();
+        graph.xAxis.AxisNumTicks = LabelSet.Count;
+        graph.xAxis.AxisMaxValue = LabelSet.Count - 1;
+        graph.xAxis.axisLabels.SetList(LabelSet);
+    }
+    private void clearGraph()
+    {
+        painSeries.pointValues.Clear();
+        botherSeries.pointValues.Clear();
+    }
+
+    public void SymptomSelected(string symtom)
+    {
+        symptomSelected = symtom;
+        weekChanged(); 
+    }
+
+
+    private void setPainSeries(List<Vector2>dataSet)
+    {
+        painSeries.pointValues.SetList(dataSet);
+    }
+    private void setBotherSeries(List<Vector2> dataSet)
+    {
+        botherSeries.pointValues.SetList(dataSet);
+    }
+
+    public void monthChanged ()
 	{
+        clearGraph();
+        weekDropdown.interactable = true;
 		monthSelected = monthDropdown.options [monthDropdown.value].text;
 		aggregateEntriesForTheDate ();
 	}
 
 	public void yearChanged()
 	{
-		yearSelected = yearDropdown.options[yearDropdown.value].text;
+        clearGraph();
+        yearSelected = yearDropdown.options[yearDropdown.value].text;
 		aggregateEntriesForTheDate ();
 	}
 
 	public void weekChanged()
 	{
-		weekSelected = weekDropdown.options [weekDropdown.value].text;
+        clearGraph();
+        weekSelected = weekDropdown.options [weekDropdown.value].text;
 		aggregateEntriesForTheDate ();
+        int week = int.Parse(weekSelected);
+        List<Vector2> painData = new List<Vector2>();
+        List<Vector2> botherData = new List<Vector2>();
+        List<string> xLabels = new List<string>();
+        int xValue = 0;
+        foreach (string date in currentSelection.Keys)
+        {
+            string[] dateSplit = date.Split('_');
+            int day = int.Parse(dateSplit[1]);
+         
+            if(day <= week * 7 && day < (week * 7) + 2)
+            {
+              xLabels.Add(date);
+              List<BodyPartsTable> tables =  currentSelection[date];
+                foreach(BodyPartsTable table in tables)
+                    if(table.getPartName().Contains("General Symptoms"))
+                    {
+                        foreach(symptoms symtom in table.getSymptoms())
+                        {
+                            if (symtom.name.Contains(symptomSelected))
+                            {
+                                int pain = 0;
+                                int bother = 0;
+                                if (symtom.painScale > 0)
+                                    pain = (int)symtom.painScale;
+                                if (symtom.botherScale > 0)
+                                    bother = (int)symtom.botherScale;
+                                painData.Add(new Vector2(xValue, pain));
+                                botherData.Add(new Vector2(xValue, bother));
+                                
+                            }
+                        }
+                    }
+                xValue++;
+            }
+        }
+        clearGraph();
+        setUpXAxis(xLabels); 
+        setBotherSeries(botherData);
+        setPainSeries(painData);
 	}
 
 
@@ -65,6 +168,7 @@ public class GraphAggregator : MonoBehaviour {
 					currentSelection.Add (date,dateToSymtpoms[date]);
 			}
 		}
+ 
 
 	}
 
@@ -91,6 +195,7 @@ public class GraphAggregator : MonoBehaviour {
 		}
 		monthDropdown.AddOptions (months);
 		yearDropdown.AddOptions (years);
+
 		monthSelected = monthDropdown.options [monthDropdown.value].text;
 		yearSelected = yearDropdown.options[yearDropdown.value].text;
 		return true;
