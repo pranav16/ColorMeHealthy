@@ -162,7 +162,7 @@ public class StickerHomeScreenBehaviour : MonoBehaviour {
 				Ray rayCheck = Camera.main.ScreenPointToRay (Input.mousePosition);
 			
 				if (Physics.Raycast (rayCheck, out hitCheck)) {
-					if(hitCheck.collider.name == "Stickers")
+					if(hitCheck.collider.name == "Stickers" || hitCheck.collider.GetComponent<Collider>().name == "Trash")
 					{
 						stickersButtonClicked();
 						return;
