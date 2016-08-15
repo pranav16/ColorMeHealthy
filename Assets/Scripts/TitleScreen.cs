@@ -2,8 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using GooglePlayGames;
-using GooglePlayGames.BasicApi;
+
 using UnityEngine.SocialPlatforms;
 public class TitleScreen : MonoBehaviour {
 
@@ -14,17 +13,7 @@ public class TitleScreen : MonoBehaviour {
 		#if UNITY_EDITOR
 	 	freshBuild ();
 		#endif
-		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-			// require access to a player's Google+ social graph (usually not needed)
-			.RequireGooglePlus()
-			.Build();
-
-		PlayGamesPlatform.InitializeInstance(config);
-		// recommended for debugging:
-		PlayGamesPlatform.DebugLogEnabled = true;
-		// Activate the Google Play Games platform
-		PlayGamesPlatform.Activate();
-
+	
 	}
 	
 	// Update is called once per frame
@@ -63,18 +52,6 @@ public class TitleScreen : MonoBehaviour {
 
 	public void login()
 	{
-		Social.localUser.Authenticate((bool success) => {
-			if(success)
-			{
-				Debug.Log(Social.localUser.id);
-				debugText.text = Social.localUser.id;
 
-			}
-			else
-			{
-				Debug.Log("failed");
-				debugText.text = "fail";
-			}
-		});
 	}
 }

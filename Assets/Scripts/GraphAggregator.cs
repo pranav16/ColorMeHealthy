@@ -116,12 +116,19 @@ public class GraphAggregator : MonoBehaviour {
 
     public void monthChanged ()
 	{
-		monthSelected = monthDropdown.options [monthDropdown.value].text;
+		if (!pastDaysSelected.Contains ("None"))
+			return;
+		
+		buildGraphForDateChange ();
 	}
 
 	public void yearChanged()
 	{
-        yearSelected = yearDropdown.options[yearDropdown.value].text;
+		if (!pastDaysSelected.Contains ("None"))
+			return;
+		
+		buildGraphForDateChange ();
+	
 
 	}
 
@@ -188,53 +195,60 @@ public class GraphAggregator : MonoBehaviour {
 	{   
 		if (!pastDaysSelected.Contains ("None"))
 			return;
+		buildGraphForDateChange ();
 
-		monthChanged ();
-		yearChanged ();
-        weekSelected = weekDropdown.options [weekDropdown.value].text;
-		aggregateEntriesForTheDate ();
-        int week = int.Parse(weekSelected);
-        List<Vector2> painData = new List<Vector2>();
-        List<Vector2> botherData = new List<Vector2>();
-        List<string> xLabels = new List<string>();
-        int xValue = 0;
-        foreach (string date in currentSelection.Keys)
-        {
-            string[] dateSplit = date.Split('_');
-            int day = int.Parse(dateSplit[1]);
-         
-			if(day > (week -1) * 7 && day <= week * 7)
-            {
-				xLabels.Add(dateSplit[1]);
-              List<BodyPartsTable> tables =  currentSelection[date];
-                foreach(BodyPartsTable table in tables)
-                    if(table.getPartName().Contains("General Symptoms"))
-                    {
-                        foreach(symptoms symtom in table.getSymptoms())
-                        {
-                            if (symtom.name.Contains(symptomSelected))
-                            {
-                                int pain = 0;
-                                int bother = 0;
-                                if (symtom.painScale > 0)
-                                    pain = (int)symtom.painScale;
-                                if (symtom.botherScale > 0)
-                                    bother = (int)symtom.botherScale;
-                                painData.Add(new Vector2(xValue, pain));
-                                botherData.Add(new Vector2(xValue, bother));
-                                
-                            }
-                        }
-                    }
-                xValue++;
-            }
-        }
-        clearGraph();
-        setUpXAxis(xLabels); 
-        setBotherSeries(botherData);
-        setPainSeries(painData);
 	}
 
+	public void buildGraphForDateChange()
+	{
+		if(weekDropdown.options.Count > 0)
+		weekSelected = weekDropdown.options [weekDropdown.value].text;
+		if(monthDropdown.options.Count > 0)
+		monthSelected = monthDropdown.options [monthDropdown.value].text;
+		if(yearDropdown.options.Count > 0)
+		yearSelected = yearDropdown.options[yearDropdown.value].text;
+		aggregateEntriesForTheDate ();
+		int week = int.Parse(weekSelected);
+		List<Vector2> painData = new List<Vector2>();
+		List<Vector2> botherData = new List<Vector2>();
+		List<string> xLabels = new List<string>();
+		int xValue = 0;
+		foreach (string date in currentSelection.Keys)
+		{
+			string[] dateSplit = date.Split('_');
+			int day = int.Parse(dateSplit[1]);
+
+			if(day > (week -1) * 7 && day <= week * 7)
+			{
+				xLabels.Add(dateSplit[1]);
+				List<BodyPartsTable> tables =  currentSelection[date];
+				foreach(BodyPartsTable table in tables)
+					if(table.getPartName().Contains("General Symptoms"))
+					{
+						foreach(symptoms symtom in table.getSymptoms())
+						{
+							if (symtom.name.Contains(symptomSelected))
+							{
+								int pain = 0;
+								int bother = 0;
+								if (symtom.painScale > 0)
+									pain = (int)symtom.painScale;
+								if (symtom.botherScale > 0)
+									bother = (int)symtom.botherScale;
+								painData.Add(new Vector2(xValue, pain));
+								botherData.Add(new Vector2(xValue, bother));
+
+							}
+						}
+					}
+				xValue++;
+			}
+		}
+		clearGraph();
+		setUpXAxis(xLabels); 
+		setBotherSeries(botherData);
+		setPainSeries(painData);
+	}
 
 	private void aggregateEntriesForTheDate()
 	{
@@ -278,8 +292,9 @@ public class GraphAggregator : MonoBehaviour {
 		}
 		monthDropdown.AddOptions (months);
 		yearDropdown.AddOptions (years);
-
+		if(monthDropdown.options.Count > 0)
 		monthSelected = monthDropdown.options [monthDropdown.value].text;
+		if(yearDropdown.options.Count > 0)
 		yearSelected = yearDropdown.options[yearDropdown.value].text;
 		return true;
 	}
@@ -289,7 +304,7 @@ public class GraphAggregator : MonoBehaviour {
 	{
 
 		string filePath = "Symptoms.json";
-		string fileName = Application.dataPath + "/document.json";//Application.persistentDataPath + "/Color" + filePath;
+		string fileName = Application.persistentDataPath + "/Color" + filePath; //Application.dataPath + "/document.json"
 		if (!System.IO.File.Exists (fileName))return;
 		string rawjson = System.IO.File.ReadAllText(fileName);
 		Debug.Log("is file present");
@@ -327,7 +342,7 @@ public class GraphAggregator : MonoBehaviour {
 				dateToSymtpoms.Add (obj.GetField ("Date").str, table);
 		}
 
-		for (int i = Entries.list.Count - 1; i > 0 && i > Entries.list.Count -  31; i--) {
+		for (int i = Entries.list.Count - 1,  count = 0; i >= 0 && count <= 31; i--,count++) {
 			List<BodyPartsTable> table = new List<BodyPartsTable> ();
 			JSONObject obj = Entries.list [i];
 			if (obj.GetField ("BodyParts").list == null)
